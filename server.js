@@ -30,12 +30,11 @@ app.use("/api/logs", logRoutes);
 app.use("/api/attendance", require("./routes/attendanceRoutes"));
 // Add others as you create the files...
 
-// 5. Port Handling for Local vs Vercel
+
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-  });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+});
 }
 
 module.exports = app;
