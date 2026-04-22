@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://ahlulquran.netlify.app/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahlul Quran</title>
+<link href="./Ahlul Quran_files/css2" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1209;--bg2:#0d1710;--card:#152018;--card2:#1a2820;--card3:#1f3026;
+  --border:#263d2e;--border2:#2e4a38;
+  --gold:#c8a84b;--gold-light:#e2c96e;--gold-dim:rgba(200,168,75,.13);--gold-glow:rgba(200,168,75,.06);
+  --green:#2d6b3a;--green2:#3a8a4a;--teal:#4a8a8a;--teal-dim:rgba(74,138,138,.12);
+  --text:#e4dfd0;--text-muted:#7a9880;--text-dim:#4a6652;
+  --red:#b54843;--red-dim:rgba(181,72,67,.13);--orange:#c8783a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;line-height:1.6;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(44,100,55,.09),transparent),
+             radial-gradient(ellipse 60% 60% at 90% 100%,rgba(200,168,75,.05),transparent);}
+.container{max-width:1020px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;flex-direction:column;}
+#loading-screen.active{align-items:center;justify-content:center;}
+#auth-screen.active{align-items:center;justify-content:center;}
+#app-screen.active{display:block;}
+
+/* LOADING */
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-text{color:var(--text-muted);font-size:13px;margin-bottom:10px;}
+.load-step{font-size:11px;color:var(--text-dim);margin-bottom:4px;}
+.err-box{display:none;background:var(--red-dim);border:1px solid var(--red);border-radius:10px;padding:16px;max-width:340px;text-align:center;margin-top:16px;}
+.err-box p{color:#e08a85;font-size:13px;margin-bottom:14px;}
+.err-box button{background:var(--gold);color:#0a1209;border:none;border-radius:7px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin:4px;}
+.err-box .out-btn{background:transparent;color:var(--text-muted);border:1px solid var(--border);}
+
+/* AUTH */
+.auth-box{background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:44px 36px;max-width:400px;width:90%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.5);}
+.auth-logo{position:relative;width:60px;height:60px;margin:0 auto 18px;display:grid;place-items:center;}
+.auth-logo::before{content:'';position:absolute;inset:0;border:2px solid var(--gold);border-radius:8px;transform:rotate(45deg);}
+.auth-logo-inner{font-family:'Amiri',serif;font-size:26px;color:var(--gold-light);position:relative;z-index:1;}
+.auth-box h1{font-family:'Amiri',serif;font-size:30px;color:var(--gold-light);margin-bottom:6px;}
+.auth-box p{color:var(--text-muted);font-size:13px;margin-bottom:28px;}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;background:#fff;color:#1f1f1f;border:none;border-radius:10px;padding:13px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.google-btn:hover{background:#f5f5f5;transform:translateY(-1px);}
+.google-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.google-btn svg{width:20px;height:20px;flex-shrink:0;}
+
+/* HEADER */
+header{padding:18px 0 14px;margin-bottom:28px;border-bottom:1px solid var(--border);position:relative;}
+header::after{content:'';position:absolute;bottom:-1px;left:0;width:160px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.logo-mark{position:relative;width:42px;height:42px;flex-shrink:0;display:grid;place-items:center;}
+.logo-mark::before{content:'';position:absolute;inset:0;border:1.5px solid var(--gold);border-radius:5px;transform:rotate(45deg);}
+.logo-mark-inner{font-family:'Amiri',serif;font-size:18px;color:var(--gold-light);position:relative;z-index:1;}
+.header-title h1{font-family:'Amiri',serif;font-size:24px;color:var(--gold-light);}
+.header-title .sub{font-size:10px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.date-chip{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;text-align:right;}
+.date-chip .dc-day{font-family:'Amiri',serif;font-size:13px;color:var(--gold-light);}
+.date-chip .dc-yr{font-size:9px;color:var(--text-dim);}
+.user-chip{display:flex;align-items:center;gap:7px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;}
+.user-photo{width:24px;height:24px;border-radius:50%;}
+.user-name{font-size:11.5px;color:var(--text-muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.signout-btn{background:none;border:none;color:var(--text-dim);font-size:10.5px;cursor:pointer;font-family:inherit;}
+.signout-btn:hover{color:var(--red);}
+
+/* CLASS BAR */
+.class-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.class-select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;cursor:pointer;min-width:160px;}
+.class-select:focus{outline:none;border-color:var(--gold);}
+.class-select option{background:var(--card2);}
+.bar-btn{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:8px 13px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.bar-btn.gold{background:var(--gold-dim);border:1px solid rgba(200,168,75,.3);color:var(--gold);}
+.bar-btn.gold:hover{border-color:var(--gold);}
+.bar-btn.ghost{background:var(--card2);border:1px solid var(--border);color:var(--text-muted);}
+.bar-btn.ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* TABLE */
+.page-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.page-label-text{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+.page-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 20px rgba(0,0,0,.25);}
+table{width:100%;border-collapse:collapse;}
+thead th{background:var(--card2);padding:10px 16px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);}
+thead th.center{text-align:center;}
+tbody tr{background:var(--card);border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--card3);}
+tbody tr.absent-row{opacity:.5;}
+tbody td{padding:12px 16px;font-size:13px;vertical-align:middle;}
+td.td-name{font-weight:500;display:flex;align-items:center;gap:8px;cursor:pointer;}
+td.td-name:hover{color:var(--gold-light);}
+td.td-dor{color:var(--text-muted);font-size:11.5px;max-width:240px;cursor:pointer;}
+td.td-score{text-align:center;cursor:pointer;}
+td.td-absent{text-align:center;}
+.avatar{width:30px;height:30px;border-radius:50%;background:rgba(200,168,75,.15);border:1px solid var(--border2);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.score-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-weight:700;font-size:12px;}
+.score-badge.empty{background:var(--card2);color:var(--text-dim);border:1px solid var(--border);}
+.score-badge.s1{background:var(--red-dim);color:var(--red);border:1px solid var(--red);}
+.score-badge.s2{background:rgba(200,120,58,.13);color:var(--orange);border:1px solid var(--orange);}
+.score-badge.s3{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold);}
+.score-badge.s4{background:rgba(100,170,100,.13);color:#6aaa6a;border:1px solid #6aaa6a;}
+.score-badge.s5{background:rgba(50,160,90,.13);color:#3a9e5a;border:1px solid #3a9e5a;}
+.det-flag{display:inline-block;background:var(--red-dim);color:var(--red);border:1px solid rgba(181,72,67,.4);border-radius:3px;font-size:9px;font-weight:700;padding:1px 5px;margin-left:5px;}
+.absent-badge{display:inline-block;background:rgba(200,120,58,.15);color:var(--orange);border:1px solid rgba(200,120,58,.4);border-radius:3px;font-size:9px;font-weight:700;padding:1px 5px;margin-left:5px;}
+.absent-cb{width:16px;height:16px;accent-color:var(--red);cursor:pointer;}
+.empty-state{text-align:center;padding:36px 20px;color:var(--text-dim);font-size:13px;}
+.empty-state strong{display:block;font-size:15px;color:var(--text-muted);margin-bottom:5px;}
+
+/* DETAIL */
+#detail-view{display:none;}
+.back-btn{display:inline-flex;align-items:center;gap:7px;background:var(--card2);border:1px solid var(--border);color:var(--text-muted);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-family:inherit;transition:all .15s;margin-bottom:18px;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
+.stu-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.stu-avatar{width:50px;height:50px;border-radius:50%;background:rgba(200,168,75,.2);border:2px solid var(--gold);display:grid;place-items:center;font-size:16px;font-weight:700;color:var(--gold);}
+.stu-info{flex:1;}
+.stu-info h2{font-family:'Amiri',serif;font-size:22px;color:var(--gold-light);}
+.stu-info p{color:var(--text-muted);font-size:12px;margin-top:2px;}
+.today-chip{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;text-align:center;}
+.today-chip .tc-l{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);}
+.today-chip .tc-d{font-family:'Amiri',serif;font-size:13px;color:var(--gold-light);margin-top:1px;}
+
+/* CARDS */
+.sections-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.full-w{grid-column:1/-1;}
+.record-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:visible;}
+.record-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px;}
+.record-card.dor::before{background:var(--gold);}
+.record-card.sp::before{background:var(--green2);}
+.record-card.sabak::before{background:var(--teal);}
+.card-title{font-family:'Amiri',serif;font-size:17px;margin-bottom:2px;}
+.record-card.dor .card-title{color:var(--gold-light);}
+.record-card.sp .card-title{color:#7ecf8a;}
+.record-card.sabak .card-title{color:#7ecfcf;}
+.card-sub{font-size:10.5px;color:var(--text-dim);margin-bottom:12px;}
+.fl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;display:block;}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:10px;}
+.fg:last-child{margin-bottom:0;}
+
+/* DROPDOWN */
+.ms-wrap{position:relative;}
+.ms-trig{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;min-height:36px;text-align:left;transition:border-color .15s;}
+.ms-trig:hover,.ms-trig.open{border-color:var(--gold);}
+.ms-trig .tt{color:var(--text-muted);font-size:11.5px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-trig .tt.hv{color:var(--text);}
+.ms-trig .arr{color:var(--text-dim);font-size:9px;transition:transform .2s;margin-left:6px;flex-shrink:0;}
+.ms-trig.open .arr{transform:rotate(180deg);}
+.ms-dd{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:var(--card2);border:1px solid var(--border2);border-radius:9px;z-index:400;box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;}
+.ms-dd.open{display:flex;flex-direction:column;}
+.ms-search-wrap{padding:8px 10px 6px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ms-search{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:inherit;font-size:12px;}
+.ms-search::placeholder{color:var(--text-dim);}
+.ms-search:focus{outline:none;border-color:var(--gold);}
+.ms-list{max-height:170px;overflow-y:auto;}
+.dd-gh{padding:5px 12px 2px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:var(--card3);position:sticky;top:0;}
+.dd-opt{display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:background .1s;}
+.dd-opt:hover{background:var(--card3);}
+.dd-opt.sel{background:var(--gold-dim);}
+.dd-opt input[type=checkbox]{accent-color:var(--gold);width:12px;height:12px;cursor:pointer;flex-shrink:0;}
+.dd-empty{padding:10px 12px;font-size:11.5px;color:var(--text-dim);font-style:italic;}
+
+/* STEPPER */
+.stepper{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:7px;overflow:hidden;height:36px;transition:border-color .15s;}
+.stepper:focus-within{border-color:var(--gold);}
+.sb{width:34px;height:100%;border:none;background:transparent;color:var(--text-dim);font-size:17px;cursor:pointer;display:grid;place-items:center;transition:all .15s;font-family:inherit;flex-shrink:0;}
+.sb.m:hover{background:var(--red-dim);color:var(--red);}
+.sb.p:hover{background:var(--gold-dim);color:var(--gold);}
+.sdiv{width:1px;height:100%;background:var(--border);flex-shrink:0;}
+.si{flex:1;background:transparent;border:none;color:var(--text);font-family:inherit;font-size:13px;font-weight:600;text-align:center;outline:none;padding:0 3px;min-width:0;width:0;}
+.si::-webkit-outer-spin-button,.si::-webkit-inner-spin-button{-webkit-appearance:none;}
+.si[type=number]{-moz-appearance:textfield;}
+
+/* PARENT VIEW */
+#parent-screen.active{display:block;}
+.parent-container{max-width:700px;margin:0 auto;padding:24px 20px;}
+.parent-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px;}
+.parent-logo{display:flex;align-items:center;gap:12px;}
+.parent-logo h1{font-family:'Amiri',serif;font-size:24px;color:var(--gold-light);}
+.parent-user{display:flex;align-items:center;gap:8px;}
+
+/* Student picker (first login) */
+.picker-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.picker-title{font-family:'Amiri',serif;font-size:20px;color:var(--gold-light);margin-bottom:6px;}
+.picker-sub{color:var(--text-muted);font-size:13px;margin-bottom:20px;}
+.picker-cls{margin-bottom:18px;}
+.picker-cls-name{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.picker-stu-list{display:flex;flex-direction:column;gap:6px;}
+.picker-stu-btn{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .15s;font-family:inherit;color:var(--text);font-size:13.5px;font-weight:500;text-align:left;}
+.picker-stu-btn:hover{border-color:var(--gold);background:var(--gold-glow);color:var(--gold-light);}
+.picker-stu-btn .stu-ini{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border2);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;}
+
+/* Parent student view */
+.parent-stu-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.parent-stu-hdr{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.parent-stu-av{width:52px;height:52px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold);display:grid;place-items:center;font-size:17px;font-weight:700;color:var(--gold);}
+.parent-stu-info h2{font-family:'Amiri',serif;font-size:22px;color:var(--gold-light);}
+.parent-stu-info p{color:var(--text-muted);font-size:12px;margin-top:2px;}
+
+/* Detention alert banner */
+.det-alert{display:flex;align-items:flex-start;gap:12px;background:var(--red-dim);border:1px solid rgba(181,72,67,.4);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
+.det-alert-icon{font-size:20px;flex-shrink:0;}
+.det-alert-text strong{display:block;color:var(--red);font-size:14px;margin-bottom:3px;}
+.det-alert-text p{color:var(--text-muted);font-size:12.5px;}
+
+/* Parent history */
+.parent-hist-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+.parent-hist-title{font-family:'Amiri',serif;font-size:17px;color:var(--gold-light);margin-bottom:14px;}
+.parent-sess{border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:8px;background:var(--card2);}
+.parent-sess-date{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.parent-score-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.parent-score-lbl{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+.parent-section{margin-bottom:6px;font-size:12.5px;color:var(--text-muted);}
+.parent-section strong{color:var(--text);font-weight:600;}
+.parent-comment{font-size:12.5px;color:var(--text-muted);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+
+/* ATTEMPT ROWS */
+.attempt-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;position:relative;}
+.attempt-block:last-child{margin-bottom:0;}
+.attempt-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.attempt-num{background:var(--gold-dim);color:var(--gold);border-radius:4px;padding:1px 7px;font-size:9px;}
+.rm-attempt-btn{background:transparent;border:1px solid rgba(181,72,67,.3);color:var(--red);border-radius:5px;padding:2px 8px;font-family:inherit;font-size:10px;cursor:pointer;}
+.rm-attempt-btn:hover{background:var(--red-dim);}
+.add-attempt-row{display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:border-color .15s;}
+.add-attempt-row:hover{border-color:var(--gold);}
+.add-attempt-cb{width:15px;height:15px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;}
+.add-attempt-lbl{font-size:12px;color:var(--text-muted);cursor:pointer;}
+
+/* MK ROWS */
+.mk-wrap{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.mk-lbl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1px;}
+.mk-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:5px 9px;gap:8px;}
+.mk-row-lbl{font-size:12px;color:var(--text-muted);font-weight:500;min-width:34px;}
+.no-sel{font-size:11.5px;color:var(--text-dim);font-style:italic;padding:4px 0;}
+.sp-div{border:none;border-top:1px solid var(--border);margin:10px 0 8px;}
+
+/* DAILY */
+.daily-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.daily-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--green2),var(--teal),transparent);}
+.daily-title{font-family:'Amiri',serif;font-size:17px;color:var(--gold-light);margin-bottom:14px;}
+.daily-grid{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;}
+.score-row{display:flex;gap:6px;flex-wrap:wrap;}
+.sc-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg2);color:var(--text-muted);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .18s;display:grid;place-items:center;}
+.sc-btn:hover{border-color:var(--gold);color:var(--gold);}
+.sc-btn.active[data-score="1"]{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.sc-btn.active[data-score="2"]{background:rgba(200,120,58,.15);border-color:var(--orange);color:var(--orange);}
+.sc-btn.active[data-score="3"]{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.sc-btn.active[data-score="4"]{background:rgba(100,170,100,.15);border-color:#6aaa6a;color:#6aaa6a;}
+.sc-btn.active[data-score="5"]{background:rgba(50,160,90,.15);border-color:#3a9e5a;color:#3a9e5a;}
+textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:12.5px;transition:border-color .15s;resize:vertical;min-height:66px;}
+textarea:focus{outline:none;border-color:var(--gold);}
+.det-row{margin-top:12px;display:flex;align-items:flex-start;gap:10px;background:var(--red-dim);border:1px solid rgba(181,72,67,.25);border-radius:8px;padding:10px 12px;}
+.det-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0;margin-top:2px;}
+.det-lbl{font-size:12.5px;font-weight:500;color:#e08a85;cursor:pointer;}
+.det-lbl span{font-size:10.5px;color:var(--text-dim);display:block;margin-top:1px;}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:7px;align-items:center;margin-top:14px;flex-wrap:wrap;}
+.save-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a1209;border:none;border-radius:8px;padding:9px 18px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .18s;}
+.save-btn:hover{transform:translateY(-1px);}
+.ghost-btn{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;}
+.ghost-btn:hover{border-color:var(--gold);color:var(--gold);}
+.view-btn{display:inline-flex;align-items:center;gap:5px;background:var(--teal-dim);border:1px solid rgba(74,138,138,.35);color:#7ecfcf;border-radius:8px;padding:8px 14px;font-family:inherit;font-size:12px;cursor:pointer;transition:all .18s;}
+.view-btn:hover{background:rgba(74,138,138,.2);}
+
+/* HISTORY */
+.hist-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;}
+.hist-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.hist-title{font-family:'Amiri',serif;font-size:17px;color:var(--gold-light);}
+.tab-grp{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.tab-btn{padding:5px 12px;font-family:inherit;font-size:11px;font-weight:500;background:var(--bg2);color:var(--text-muted);border:none;cursor:pointer;transition:all .15s;}
+.tab-btn+.tab-btn{border-left:1px solid var(--border);}
+.tab-btn.active{background:var(--gold-dim);color:var(--gold);font-weight:700;}
+.hist-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.hist-actions .ghost-btn,.hist-actions .view-btn{font-size:11.5px;padding:6px 11px;}
+.h-entry{border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:7px;background:var(--card2);}
+.h-entry:last-child{margin-bottom:0;}
+.h-ehdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:7px;}
+.h-eacts{display:flex;gap:5px;}
+.h-date{font-weight:700;color:var(--gold);font-size:10.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.det-tag{background:var(--red-dim);color:var(--red);border:1px solid rgba(181,72,67,.4);border-radius:3px;font-size:9px;font-weight:700;padding:1px 5px;}
+.edit-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;border:1px solid rgba(200,168,75,.3);color:var(--gold);border-radius:5px;padding:3px 8px;font-family:inherit;font-size:10.5px;cursor:pointer;transition:all .15s;}
+.edit-btn:hover{background:var(--gold-dim);}
+.del-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;border:1px solid rgba(181,72,67,.3);color:var(--red);border-radius:5px;padding:3px 8px;font-family:inherit;font-size:10.5px;cursor:pointer;transition:all .15s;}
+.del-btn:hover{background:var(--red-dim);}
+.h-sec{margin-bottom:7px;}
+.h-sec-t{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:3px;}
+.h-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.h-chip{background:var(--card3);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:11.5px;color:var(--text-muted);}
+.h-chip .err{color:var(--red);font-weight:700;}
+.h-items{display:flex;gap:12px;flex-wrap:wrap;padding-top:7px;border-top:1px solid var(--border);}
+.h-item{display:flex;flex-direction:column;gap:1px;}
+.h-item-l{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);}
+.h-item-v{color:var(--text);font-size:12.5px;font-weight:500;}
+.no-hist{color:var(--text-dim);font-size:12px;font-style:italic;}
+
+/* CLASS MODAL */
+.overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);place-items:center;padding:18px;overflow-y:auto;}
+.overlay.open{display:grid;}
+.modal-box{background:var(--card);border:1px solid var(--border2);border-radius:13px;width:100%;display:flex;flex-direction:column;box-shadow:0 28px 90px rgba(0,0,0,.7);margin:auto;}
+.m-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.m-hdr-title{font-family:'Amiri',serif;font-size:16px;color:var(--gold-light);}
+.m-close{width:26px;height:26px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:16px;cursor:pointer;display:grid;place-items:center;transition:all .15s;font-family:inherit;}
+.m-close:hover{border-color:var(--red);color:var(--red);}
+.m-body{padding:14px 16px;overflow-y:auto;}
+.m-ftr{display:flex;gap:7px;align-items:center;justify-content:flex-end;padding:11px 16px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+
+.cls-name-inp{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:inherit;font-size:13px;margin-bottom:14px;transition:border-color .15s;}
+.cls-name-inp:focus{outline:none;border-color:var(--gold);}
+.stu-list{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;max-height:260px;overflow-y:auto;}
+.stu-item{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 10px;}
+.stu-inp{flex:1;background:transparent;border:none;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;}
+.stu-inp::placeholder{color:var(--text-dim);}
+.rm-btn{width:22px;height:22px;background:transparent;border:1px solid rgba(181,72,67,.3);color:var(--red);border-radius:4px;cursor:pointer;display:grid;place-items:center;font-size:13px;flex-shrink:0;}
+.rm-btn:hover{background:var(--red-dim);}
+.add-stu-btn{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text-muted);border-radius:7px;padding:7px;font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s;margin-bottom:4px;}
+.add-stu-btn:hover{border-color:var(--gold);color:var(--gold);}
+.cls-item{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;margin-bottom:5px;}
+.cls-item-name{flex:1;font-size:13px;font-weight:500;}
+.cls-item-count{font-size:11px;color:var(--text-dim);}
+.cls-item-edit{background:transparent;border:1px solid rgba(200,168,75,.3);color:var(--gold);border-radius:5px;padding:3px 9px;font-family:inherit;font-size:11px;cursor:pointer;}
+.cls-item-del{background:transparent;border:1px solid rgba(181,72,67,.3);color:var(--red);border-radius:5px;padding:3px 9px;font-family:inherit;font-size:11px;cursor:pointer;}
+
+/* EDIT MODAL */
+.edit-sec{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:13px;position:relative;margin-bottom:10px;}
+.edit-sec::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px;}
+.edit-sec.dor::before{background:var(--gold);}
+.edit-sec.sp::before{background:var(--green2);}
+.edit-sec.sabak::before{background:var(--teal);}
+.edit-sec.daily::before{background:linear-gradient(180deg,var(--gold),var(--green2));}
+.edit-sec-title{font-family:'Amiri',serif;font-size:15px;margin-bottom:9px;}
+.edit-sec.dor .edit-sec-title{color:var(--gold-light);}
+.edit-sec.sp .edit-sec-title{color:#7ecf8a;}
+.edit-sec.sabak .edit-sec-title{color:#7ecfcf;}
+.edit-sec.daily .edit-sec-title{color:var(--gold-light);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* REPORT MODAL */
+.m-report{font-family:monospace;font-size:12.5px;line-height:1.9;color:var(--text);white-space:pre-wrap;word-break:break-word;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px 15px;}
+.copy-ok{font-size:11.5px;color:var(--green2);margin-right:auto;}
+
+/* CONFIRM */
+#confirm-ov{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.7);place-items:center;}
+#confirm-ov.open{display:grid;}
+.confirm-box{background:var(--card);border:1px solid var(--border2);border-radius:11px;padding:20px;max-width:320px;width:90%;}
+.confirm-box h3{font-family:'Amiri',serif;font-size:16px;color:var(--gold-light);margin-bottom:6px;}
+.confirm-box p{color:var(--text-muted);font-size:12.5px;margin-bottom:16px;}
+.confirm-btns{display:flex;gap:8px;justify-content:flex-end;}
+.del-ok-btn{background:var(--red);color:#fff;border:none;border-radius:7px;padding:8px 15px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;}
+
+/* SYNC BAR */
+.sync-bar{position:fixed;bottom:0;left:0;right:0;z-index:500;background:var(--card2);border-top:1px solid var(--border);padding:5px 18px;display:flex;align-items:center;gap:9px;font-size:11px;}
+.sync-bar.hidden{display:none;}
+.sync-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sync-dot.ok{background:var(--green2);}
+.sync-dot.err{background:var(--red);}
+.sync-dot.busy{background:var(--gold);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.sync-msg{flex:1;color:var(--text-dim);}
+
+/* TOAST */
+.toast{position:fixed;bottom:36px;right:18px;z-index:3000;background:var(--green2);color:#fff;padding:10px 15px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 6px 22px rgba(0,0,0,.35);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:600px){
+  .sections-grid{grid-template-columns:1fr;}
+  .full-w{grid-column:1;}
+  .daily-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .container{padding:0 12px;}
+}
+</style>
+<script src="./Ahlul Quran_files/cb=gapi.loaded_0" async=""></script><script src="./Ahlul Quran_files/api.js" type="text/javascript" charset="UTF-8" gapi_processed="true"></script></head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen" class="screen">
+  <div style="text-align:center;padding:20px;max-width:360px;">
+    <div class="spinner"></div>
+    <div class="load-text">Ahlul Quran</div>
+    <div class="load-step" id="load-step">Welcome!</div>
+    <div class="err-box" id="err-box">
+      <p id="err-msg"></p>
+      <button onclick="location.reload()">Try Again</button>
+      <button class="out-btn" onclick="emergencyOut()">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-screen" class="screen">
+  <div class="auth-box">
+    <div class="auth-logo"><div class="auth-logo-inner">ق</div></div>
+    <h1>Ahlul Quran</h1>
+    <p>Hifz progress tracker.<br>Sign in to access your classes.</p>
+    <button class="google-btn" id="google-btn" onclick="doSignIn()" disabled="">Signing in…</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" class="screen">
+<div class="container">
+  <header>
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-mark"><div class="logo-mark-inner">ق</div></div>
+        <div class="header-title"><h1>Ahlul Quran</h1><div class="sub">Hifz Student Progress Tracker</div></div>
+      </div>
+      <div class="header-right">
+        <div class="date-chip"><div class="dc-day" id="hdr-day"></div><div class="dc-yr" id="hdr-yr"></div></div>
+        <span id="admin-badge" style="display:none;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;">ADMIN</span><button id="parent-test-btn" style="display:none;background:var(--teal-dim);border:1px solid rgba(74,138,138,.4);color:#7ecfcf;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;" onclick="adminTestParentView()">👁 Parent View</button><div class="user-chip">
+          <img class="user-photo" id="user-photo" src="./Ahlul Quran_files/unnamed.jpg" alt="">
+          <span class="user-name" id="user-name">Mohammed Atif Ali</span>
+          <button class="signout-btn" onclick="doSignOut()">Sign out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="list-view">
+    <div class="class-bar">
+      <select class="class-select" id="cls-sel" onchange="onClassChange()">
+        <option value="">— Select a class —</option>
+      </select>
+      <button class="bar-btn gold" onclick="openClassModal(&#39;new&#39;)">+ New Class</button>
+      <button class="bar-btn ghost" id="manage-btn" style="display:none" onclick="openClassModal(&#39;manage&#39;)">✎ Manage Class</button>
+    </div>
+    <div id="list-content"></div>
+  </div>
+
+  <div id="detail-view">
+    <button class="back-btn" onclick="goBack()">← Back to Class</button>
+    <div class="stu-header">
+      <div class="stu-avatar" id="d-avatar"></div>
+      <div class="stu-info"><h2 id="d-name"></h2><p id="d-meta"></p></div>
+      <div class="today-chip"><div class="tc-l">Today</div><div class="tc-d" id="d-today"></div></div>
+    </div>
+    <div id="today-mode-banner" style="display:none;align-items:center;gap:10px;background:var(--gold-dim);border:1px solid rgba(200,168,75,.35);border-radius:9px;padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:var(--gold-light);">
+      <span style="font-size:16px;">✎</span>
+      <span><strong>Editing today's record</strong> — changes will update the existing session when you click Back to Class.</span>
+    </div>
+    <div id="today-new-banner" style="display:none;align-items:center;gap:10px;background:var(--teal-dim);border:1px solid rgba(74,138,138,.3);border-radius:9px;padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:#7ecfcf;">
+      <span style="font-size:16px;">＋</span>
+      <span><strong>New record</strong> — a new session will be saved when you click Back to Class.</span>
+    </div>
+    <div class="sections-grid">
+      <div class="record-card dor">
+        <div class="card-title">Dor</div><div class="card-sub">Previously memorised revision</div>
+        <div id="dor-attempts-wrap"></div>
+        <div class="add-attempt-row" onclick="addAttempt(&#39;dor&#39;)">
+          <input type="checkbox" class="add-attempt-cb" id="dor-add-cb" onclick="event.stopPropagation();addAttempt(&#39;dor&#39;)">
+          <label class="add-attempt-lbl" for="dor-add-cb">Add Dor — tick to add another Dor attempt</label>
+        </div>
+      </div>
+      <div class="record-card sp">
+        <div class="card-title">Sabak Para</div><div class="card-sub">Recent lesson revision</div>
+        <div id="sp-attempts-wrap"></div>
+        <div class="add-attempt-row" onclick="addAttempt(&#39;sp&#39;)">
+          <input type="checkbox" class="add-attempt-cb" id="sp-add-cb" onclick="event.stopPropagation();addAttempt(&#39;sp&#39;)">
+          <label class="add-attempt-lbl" for="sp-add-cb">Add Sabak Para — tick to add another attempt</label>
+        </div>
+      </div>
+      <div class="record-card sabak full-w">
+        <div class="card-title">Sabak</div><div class="card-sub">New lesson being memorised today</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Lines</label>
+            <div class="stepper"><button class="sb m" onclick="stepAdj(&#39;sab-lines&#39;,-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="sab-lines" value="0" min="0" oninput="stepSync(&#39;sab-lines&#39;,this.value)"><div class="sdiv"></div><button class="sb p" onclick="stepAdj(&#39;sab-lines&#39;,1)">+</button></div>
+          </div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Mistakes</label>
+            <div class="stepper"><button class="sb m" onclick="stepAdj(&#39;sab-mk&#39;,-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="sab-mk" value="0" min="0" oninput="stepSync(&#39;sab-mk&#39;,this.value)"><div class="sdiv"></div><button class="sb p" onclick="stepAdj(&#39;sab-mk&#39;,1)">+</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="daily-card">
+      <div class="daily-title">Daily Assessment</div>
+      <div class="daily-grid">
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Score</label>
+          <div class="score-row">
+            <button class="sc-btn" data-score="1" onclick="setScore(1)">1</button>
+            <button class="sc-btn" data-score="2" onclick="setScore(2)">2</button>
+            <button class="sc-btn" data-score="3" onclick="setScore(3)">3</button>
+            <button class="sc-btn" data-score="4" onclick="setScore(4)">4</button>
+            <button class="sc-btn" data-score="5" onclick="setScore(5)">5</button>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Comment</label><textarea id="comment" placeholder="Notes…"></textarea></div>
+      </div>
+      <div class="det-row"><input type="checkbox" id="det-chk"><label class="det-lbl" for="det-chk">Detention<span>Report will note detention on the following day.</span></label></div>
+      <div class="det-row" style="margin-top:8px;background:rgba(181,72,67,.08);border-color:rgba(181,72,67,.2);"><input type="checkbox" id="sun-det-chk"><label class="det-lbl" for="sun-det-chk" style="color:#e0a085;">Sunday Detention<span>Report will state your child has Sunday detention.</span></label></div>
+      <div class="btn-row">
+        
+        <button class="ghost-btn" onclick="dlTxt(&#39;today&#39;)">↓ Download</button>
+        <button class="view-btn" onclick="viewReport(&#39;today&#39;)">⊞ View Report</button>
+      </div>
+    </div>
+    <div class="hist-card">
+      <div class="hist-hdr">
+        <div class="hist-title">Session History</div>
+        <div class="tab-grp">
+          <button class="tab-btn active" id="tab-5" onclick="switchTab(5)">5 Days</button>
+          <button class="tab-btn" id="tab-30" onclick="switchTab(30)">30 Days</button>
+          <button class="tab-btn" id="tab-0" onclick="switchTab(0)">All</button>
+        </div>
+      </div>
+      <div class="hist-actions">
+        <button class="ghost-btn" onclick="dlTxt(&#39;history&#39;)">↓ History</button>
+        <button class="view-btn" onclick="viewReport(&#39;history&#39;)">⊞ View History</button>
+      </div>
+      <div id="hist-list"></div>
+    </div>
+  </div>
+</div>
+<div class="sync-bar hidden" id="sync-bar"><div class="sync-dot ok" id="sync-dot"></div><span class="sync-msg" id="sync-msg"></span></div>
+</div>
+
+<!-- CLASS MODAL -->
+<div class="overlay" id="cls-modal" onclick="if(event.target===this)closeClassModal()">
+  <div class="modal-box" style="max-width:500px;max-height:88vh;">
+    <div class="m-hdr"><div class="m-hdr-title" id="cls-modal-title">Classes</div><button class="m-close" onclick="closeClassModal()">✕</button></div>
+    <div class="m-body" id="cls-modal-body" style="max-height:65vh;overflow-y:auto;"></div>
+    <div class="m-ftr" id="cls-modal-ftr"></div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="overlay" id="rpt-modal" onclick="if(event.target===this)closeReport()">
+  <div class="modal-box" style="max-width:620px;max-height:82vh;">
+    <div class="m-hdr"><div class="m-hdr-title" id="rpt-title">Report</div><button class="m-close" onclick="closeReport()">✕</button></div>
+    <div class="m-body" style="max-height:55vh;overflow-y:auto;"><div class="m-report" id="rpt-content"></div></div>
+    <div class="m-ftr"><span class="copy-ok" id="copy-ok"></span><button class="ghost-btn" onclick="copyReport()">⧉ Copy</button><button class="ghost-btn" id="rpt-dl-btn">↓ Download</button><button class="ghost-btn" onclick="closeReport()">Close</button></div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="edit-modal" onclick="if(event.target===this)closeEdit()">
+  <div class="modal-box" style="max-width:660px;max-height:90vh;">
+    <div class="m-hdr"><div><div class="m-hdr-title">Edit Record</div><div style="font-size:10.5px;color:var(--text-dim);margin-top:2px;" id="edit-sub"></div></div><button class="m-close" onclick="closeEdit()">✕</button></div>
+    <div class="m-body" id="edit-body" style="max-height:62vh;overflow-y:auto;"></div>
+    <div class="m-ftr"><button class="ghost-btn" onclick="closeEdit()">Cancel</button><button class="save-btn" onclick="saveEdit()">✓ Update</button></div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div id="confirm-ov"><div class="confirm-box"><h3>Are you sure?</h3><p id="confirm-txt"></p><div class="confirm-btns"><button class="ghost-btn" onclick="closeConfirm()">Cancel</button><button class="del-ok-btn" id="confirm-ok">Delete</button></div></div></div>
+
+
+<!-- PARENT SCREEN -->
+<div id="parent-screen" class="screen active">
+  <div class="parent-container">
+    <div class="parent-header">
+      <div class="parent-logo">
+        <div class="logo-mark" style="width:36px;height:36px;"><div class="logo-mark-inner" style="font-size:16px;">ق</div></div>
+        <h1>Ahlul Quran</h1>
+      </div>
+      <div class="parent-user">
+        <img class="user-photo" id="parent-photo" src="./Ahlul Quran_files/unnamed.jpg" alt="" style="width:28px;height:28px;border-radius:50%;">
+        <span style="font-size:12px;color:var(--text-muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="parent-name">Mohammed Atif Ali</span>
+        <button class="signout-btn" onclick="doSignOut()" style="font-size:11px;">Sign out</button>
+      </div>
+    </div>
+    <div id="parent-content">
+      <div class="picker-card">
+        <div class="picker-title">Welcome to Ahlul Quran</div>
+        <div class="picker-sub">Please select your child's name from the list below. You will only need to do this once.</div>
+        <div class="picker-cls">
+          <div class="picker-cls-name">Huzaifa's Hifdh Class</div>
+          <div class="picker-stu-list">
+            <button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Danyal Raja&#39;)">
+              <div class="stu-ini">DR</div>Danyal Raja
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Hud Patel&#39;)">
+              <div class="stu-ini">HP</div>Hud Patel
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Ahmed Patel&#39;)">
+              <div class="stu-ini">AP</div>Ahmed Patel
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Abdurrahman Muhammad&#39;)">
+              <div class="stu-ini">AM</div>Abdurrahman Muhammad
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Haroon Mughal&#39;)">
+              <div class="stu-ini">HM</div>Haroon Mughal
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Zaydan Tayub&#39;)">
+              <div class="stu-ini">ZT</div>Zaydan Tayub
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Muhammad Hussain Kothiya&#39;)">
+              <div class="stu-ini">MH</div>Muhammad Hussain Kothiya
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Muhammad Khan&#39;)">
+              <div class="stu-ini">MK</div>Muhammad Khan
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Uthman Ghodawala&#39;)">
+              <div class="stu-ini">UG</div>Uthman Ghodawala
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Abdur Rahman Makda&#39;)">
+              <div class="stu-ini">AR</div>Abdur Rahman Makda
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;Qp3V7ycBqlX5ZKRRbfPIfxtUMcr1&#39;,&#39;mnog86rm&#39;,&#39;Zakariya Abdulla&#39;)">
+              <div class="stu-ini">ZA</div>Zakariya Abdulla
+            </button>
+          </div>
+        </div><div class="picker-cls">
+          <div class="picker-cls-name">Hafiz Zubair</div>
+          <div class="picker-stu-list">
+            <button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Humza Bhikha&#39;)">
+              <div class="stu-ini">HB</div>Humza Bhikha
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Muhammad Bhikha&#39;)">
+              <div class="stu-ini">MB</div>Muhammad Bhikha
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Muhammad Ali&#39;)">
+              <div class="stu-ini">MA</div>Muhammad Ali
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Ahmed Chariwala&#39;)">
+              <div class="stu-ini">AC</div>Ahmed Chariwala
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Abdurrahman Khattak&#39;)">
+              <div class="stu-ini">AK</div>Abdurrahman Khattak
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Muhammad Azeez&#39;)">
+              <div class="stu-ini">MA</div>Muhammad Azeez
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;M Yusuf Patel&#39;)">
+              <div class="stu-ini">MY</div>M Yusuf Patel
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Muhammed Patel&#39;)">
+              <div class="stu-ini">MP</div>Muhammed Patel
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Ibrahim Ali&#39;)">
+              <div class="stu-ini">IA</div>Ibrahim Ali
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Nazmul Hussein&#39;)">
+              <div class="stu-ini">NH</div>Nazmul Hussein
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;W3oapzPCMESDs2APn8KUJvPQF3g1&#39;,&#39;mnsrcxs4&#39;,&#39;Muhammad Aliyan&#39;)">
+              <div class="stu-ini">MA</div>Muhammad Aliyan
+            </button>
+          </div>
+        </div><div class="picker-cls">
+          <div class="picker-cls-name">Hifz Mayflower</div>
+          <div class="picker-stu-list">
+            <button class="picker-stu-btn" onclick="selectStudent(&#39;whVvhIAz7AW47No7TiUDHeFdLrv1&#39;,&#39;mnpts8vn&#39;,&#39;Shaymaa Bhayat&#39;)">
+              <div class="stu-ini">SB</div>Shaymaa Bhayat
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;whVvhIAz7AW47No7TiUDHeFdLrv1&#39;,&#39;mnpts8vn&#39;,&#39;Isma Butt&#39;)">
+              <div class="stu-ini">IB</div>Isma Butt
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;whVvhIAz7AW47No7TiUDHeFdLrv1&#39;,&#39;mnpts8vn&#39;,&#39;Unaysah Lorgat&#39;)">
+              <div class="stu-ini">UL</div>Unaysah Lorgat
+            </button><button class="picker-stu-btn" onclick="selectStudent(&#39;whVvhIAz7AW47No7TiUDHeFdLrv1&#39;,&#39;mnpts8vn&#39;,&#39;Ruqayya Manga&#39;)">
+              <div class="stu-ini">RM</div>Ruqayya Manga
+            </button>
+          </div>
+        </div>
+      </div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut as fbOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import{getDatabase,ref,set,get}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+const FB={
+  apiKey:"AIzaSyCgJAQc_v612ecfYKE6MM2OzdsreEkxtC4",
+  authDomain:"ahlul-quran-1708.firebaseapp.com",
+  projectId:"ahlul-quran-1708",
+  storageBucket:"ahlul-quran-1708.firebasestorage.app",
+  messagingSenderId:"1001580146105",
+  appId:"1:1001580146105:web:6433e16cd7944de3d3da68",
+  databaseURL:"https://ahlul-quran-1708-default-rtdb.europe-west1.firebasedatabase.app"
+};
+const app=initializeApp(FB);
+const auth=getAuth(app);
+const db=getDatabase(app);
+const gp=new GoogleAuthProvider();
+
+const ADMIN_EMAIL='zubairvohra95@gmail.com';
+const DEFAULT_CLASS='Hafiz Zubair';
+let CU=null,isAdmin=false,classes={},records={},allUsersData={},curClassId=null,curStudents=[],curOwnerUid=null;
+let cur=null,selScore=null,curTab=5;
+const selJuz={dor:new Set(),sp:new Set()};
+const mkC={dor:{}};
+const SIDS=['sp-pg','sp-mk','sab-lines','sab-mk'];
+let editIdx=-1,eSJ={dor:new Set(),sp:new Set()},eMkD={},eScore=null;
+let todayEditIdx=-1; // index of today's record if editing existing
+// Attempts: arrays of {selJuz, mkCounts, pages, mistakes} per attempt
+let dorAttempts=[],spAttempts=[];
+let delIdx=-1,rptTxt='',absentToday={},editingCls=null;
+
+const JUZ=[];
+for(let j=1;j<=30;j++)for(let p=1;p<=4;p++)JUZ.push(`${j}.${p}`);
+
+function step(id){return document.getElementById(id);}
+function setStep(msg){const e=step('load-step');if(e)e.textContent=msg;}
+function showErr(msg){
+  const e=step('err-box'),m=step('err-msg');
+  if(e)e.style.display='block';if(m)m.textContent=msg;
+  step('loading-screen').querySelector('.spinner').style.display='none';
+  step('load-step').style.display='none';
+}
+function showScr(s){
+  ['loading-screen','auth-screen','app-screen','parent-screen'].forEach(id=>{
+    step(id).classList.toggle('active',id===s);
+  });
+}
+function toast(msg){
+  const t=step('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+function sync(state,msg){
+  const b=step('sync-bar');if(!b)return;
+  b.classList.remove('hidden');
+  step('sync-dot').className='sync-dot '+state;
+  step('sync-msg').textContent=msg;
+}
+function uRef(path){return ref(db,'users/'+CU.uid+'/'+path);}
+
+window.emergencyOut=async()=>{try{await fbOut(auth);}catch(e){}location.reload();};
+window.doSignIn=async()=>{
+  const btn=step('google-btn');
+  btn.disabled=true;btn.textContent='Signing in…';
+  try{await signInWithPopup(auth,gp);}
+  catch(e){btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:20px;flex-shrink:0"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google`;
+  toast('Sign-in failed: '+e.message);}
+};
+window.doSignOut=async()=>{await fbOut(auth);};
+
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    CU=user;
+    isAdmin=user.email===ADMIN_EMAIL;
+    showScr('loading-screen');
+    setStep('Signed in as '+user.email);
+    step('user-photo').src=user.photoURL||'';
+    step('user-name').textContent=user.displayName||user.email;
+    try{
+      setStep('Loading data…');
+      const t=new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timed out after 10s — check your internet connection and try again')),10000));
+      await Promise.race([loadData(),t]);
+      setStep('Checking account…');
+      const route=await checkAndRouteUser();
+      if(route==='teacher'){
+        setStep('Done!');showScr('app-screen');initApp();
+      } else if(route?.role==='parent'){
+        setStep('Loading your child\'s records…');
+        showScr('parent-screen');
+        await initParentView(route.parentOf);
+      } else {
+        // New user — show parent picker
+        setStep('Welcome!');
+        showScr('parent-screen');
+        await showStudentPicker();
+      }
+    }catch(e){
+      console.error(e);
+      showErr(e.message||'Failed to load. Please try again.');
+    }
+  } else {
+    CU=null;classes={};records={};curClassId=null;
+    showScr('auth-screen');
+  }
+});
+
+async function loadData(){
+  if(isAdmin){
+    // Admin: load all users' data
+    const snap=await get(ref(db,'users'));
+    allUsersData={};classes={};records={};
+    if(snap.exists()){
+      const all=snap.val();
+      Object.entries(all).forEach(([uid,udata])=>{
+        allUsersData[uid]=udata;
+        Object.entries(udata.data?.classes||{}).forEach(([cid,cls])=>{
+          if(uid===CU.uid){
+            // Admin's OWN classes: use the real key, no prefix
+            classes[cid]={...cls,_ownerUid:uid,_ownerCid:cid};
+          } else {
+            // Other teachers' classes: prefix with uid__ so they're identifiable
+            classes[uid+'__'+cid]={...cls,_ownerUid:uid,_ownerCid:cid};
+          }
+        });
+      });
+      // Admin's own records
+      const myData=all[CU.uid]?.data||{};
+      records=myData.records||{};
+    }
+  } else {
+    // Regular user: own data only
+    const snap=await get(uRef('data'));
+    if(snap.exists()){const d=snap.val();classes=d.classes||{};records=d.records||{};}
+    else{classes={};records={};}
+  }
+}
+
+// Build a clean classes object with no internal meta fields, own classes only
+function buildOwnClasses(){
+  const own={};
+  Object.entries(classes).forEach(([cid,cls])=>{
+    if(!cid.includes('__')){
+      const{_ownerUid,_ownerCid,...clean}=cls;
+      own[cid]=clean;
+    }
+  });
+  return own;
+}
+
+// Save only classes to Firebase (never touches records)
+async function saveClassesOnly(){
+  if(isAdmin){
+    const own=buildOwnClasses();
+    // Fetch own existing records so we don't lose them
+    const snap=await get(ref(db,'users/'+CU.uid+'/data'));
+    const existRec=snap.exists()?snap.val().records||{}:{};
+    await set(ref(db,'users/'+CU.uid+'/data'),{classes:own,records:existRec});
+    if(!allUsersData[CU.uid])allUsersData[CU.uid]={data:{classes:{},records:{}}};
+    if(!allUsersData[CU.uid].data)allUsersData[CU.uid].data={};
+    allUsersData[CU.uid].data.classes=own;
+  } else {
+    const own={};
+    Object.entries(classes).forEach(([cid,cls])=>{const{_ownerUid,_ownerCid,...c}=cls;own[cid]=c;});
+    const snap=await get(uRef('data'));
+    const existRec=snap.exists()?snap.val().records||{}:{};
+    await set(uRef('data'),{classes:own,records:existRec});
+  }
+}
+
+// Save only records to Firebase (never touches classes)
+async function saveRecordsOnly(){
+  const uid=curOwnerUid||CU.uid;
+  const snap=await get(ref(db,'users/'+uid+'/data'));
+  const existCls=snap.exists()?snap.val().classes||{}:{};
+  await set(ref(db,'users/'+uid+'/data'),{classes:existCls,records:records});
+  if(!allUsersData[uid])allUsersData[uid]={data:{}};
+  if(!allUsersData[uid].data)allUsersData[uid].data={};
+  allUsersData[uid].data.records=records;
+}
+
+async function saveData(silent,mode){
+  // mode: 'classes' = only save classes, 'records' = only save records
+  // no mode = save records (default, used by autosave/record save)
+  sync('busy','Saving…');
+  try{
+    if(mode==='classes'){
+      await saveClassesOnly();
+    } else {
+      await saveRecordsOnly();
+    }
+    sync('ok','Saved ✓ '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+    if(!silent)toast('Saved ✓');
+  }catch(e){
+    sync('err','Save failed');
+    console.error(e);
+    toast('Save failed — check connection');
+  }
+}
+
+function initApp(){
+  const n=new Date();
+  step('hdr-day').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  step('hdr-yr').textContent=n.getFullYear();
+  if(isAdmin){
+    const ab=step('admin-badge');if(ab)ab.style.display='inline-flex';
+    const pb=step('parent-test-btn');if(pb)pb.style.display='inline-flex';
+  }
+  fillClassSel();
+  const ids=Object.keys(classes);
+  if(ids.length){
+    // Admin: try to default to Hafiz Zubair class
+    let defaultId=ids[0];
+    if(isAdmin){
+      const hzId=ids.find(id=>classes[id]?.name===DEFAULT_CLASS);
+      if(hzId)defaultId=hzId;
+    }
+    step('cls-sel').value=defaultId;onClassChange();
+  } else {
+    step('list-content').innerHTML=`<div class="empty-state"><strong>Welcome to Ahlul Quran</strong>Create your first class to get started.<br/><br/><button class="save-btn" style="margin:8px auto 0;" onclick="openClassModal('new')">+ Create First Class</button></div>`;
+  }
+}
+
+function fillClassSel(){
+  const sel=step('cls-sel');if(!sel)return;
+  const prev=sel.value;
+  sel.innerHTML='<option value="">— Select a class —</option>';
+  Object.entries(classes).sort((a,b)=>a[1].name.localeCompare(b[1].name)).forEach(([id,c])=>{
+    const o=document.createElement('option');o.value=id;
+    // For admin, show class name only (owner info internal)
+    o.textContent=c.name+(isAdmin&&c._ownerUid&&c._ownerUid!==CU.uid?' *':'');
+    sel.appendChild(o);
+  });
+  if(prev&&classes[prev])sel.value=prev;
+}
+
+window.onClassChange=async function(){
+  curClassId=step('cls-sel').value||null;
+  const mb=step('manage-btn');if(mb)mb.style.display=curClassId?'':'none';
+  if(curClassId){
+    const cls=classes[curClassId];
+    curStudents=(cls?.students||[]).filter(s=>s.trim());
+    absentToday={};
+    // Track who owns the current class — autosave will use this
+    curOwnerUid=(cls?._ownerUid)||CU.uid;
+    if(isAdmin){
+      const ownerData=allUsersData[curOwnerUid]?.data||{};
+      records=ownerData.records||{};
+    }
+    renderTable();
+  } else {
+    step('list-content').innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:16px 0;">Select or create a class.</div>';
+  }
+};
+
+// CLASS MODAL
+window.openClassModal=function(mode){
+  editingCls=null;
+  if(mode==='manage'&&curClassId)renderClsEditor(curClassId);
+  else renderClsEditor(null);
+  step('cls-modal').classList.add('open');
+};
+window.closeClassModal=function(){step('cls-modal').classList.remove('open');};
+
+function renderClsList(){
+  step('cls-modal-title').textContent='My Classes';
+  const keys=Object.keys(classes);
+  let html=keys.length?keys.map(id=>`<div class="cls-item">
+    <span class="cls-item-name">${classes[id].name}</span>
+    <span class="cls-item-count">${(classes[id].students||[]).length} students</span>
+    <button class="cls-item-edit" onclick="renderClsEditor('${id}')">Edit</button>
+    <button class="cls-item-del" onclick="confirmDelCls('${id}')">Delete</button>
+  </div>`).join(''):'<p style="color:var(--text-dim);font-size:12.5px;padding:6px 0 12px;">No classes yet.</p>';
+  step('cls-modal-body').innerHTML=html;
+  step('cls-modal-ftr').innerHTML=`<button class="ghost-btn" onclick="renderClsEditor(null)">+ New Class</button><button class="ghost-btn" onclick="closeClassModal()">Close</button>`;
+}
+
+window.renderClsEditor=function(clsId){
+  editingCls=clsId;
+  step('cls-modal-title').textContent=clsId?'Edit Class':'New Class';
+  const c=clsId?classes[clsId]:{name:'',students:[]};
+  const stus=[...(c.students||[])];if(!stus.length)stus.push('');
+  step('cls-modal-body').innerHTML=`
+    <div style="margin-bottom:12px;"><label class="fl">Class Name</label>
+      <input class="cls-name-inp" type="text" id="cls-name" value="${c.name.replace(/"/g,'&quot;')}" placeholder="e.g. Year 5 Hifz"/></div>
+    <label class="fl">Students</label>
+    <div class="stu-list" id="stu-list">${stus.map((s,i)=>`<div class="stu-item" id="si-${i}"><input class="stu-inp" type="text" value="${s.replace(/"/g,'&quot;')}" placeholder="Student name" id="sn-${i}"/><button class="rm-btn" onclick="rmStu(${i})">✕</button></div>`).join('')}</div>
+    <button class="add-stu-btn" onclick="addStu()">+ Add Student</button>`;
+  step('cls-modal-ftr').innerHTML=`
+    ${clsId?`<button class="ghost-btn" onclick="renderClsList()">← All Classes</button>`:''}
+    <button class="ghost-btn" onclick="closeClassModal()">Cancel</button>
+    <button class="save-btn" onclick="saveCls()">Save Class</button>`;
+};
+
+window.addStu=function(){
+  const list=step('stu-list');if(!list)return;
+  const i=list.children.length;
+  const d=document.createElement('div');d.className='stu-item';d.id='si-'+i;
+  d.innerHTML=`<input class="stu-inp" type="text" value="" placeholder="Student name" id="sn-${i}"/><button class="rm-btn" onclick="rmStu(${i})">✕</button>`;
+  list.appendChild(d);d.querySelector('input').focus();
+};
+window.rmStu=function(i){const e=step('si-'+i);if(e)e.remove();};
+
+window.saveCls=async function(){
+  const name=(step('cls-name')?.value||'').trim();
+  if(!name){toast('Please enter a class name.');return;}
+  const inputs=document.querySelectorAll('#stu-list .stu-inp');
+  const students=[...inputs].map(i=>i.value.trim()).filter(s=>s);
+  // Strip uid__ prefix if editing — use the real class key
+  const rawId=editingCls?editingCls.replace(/^[^_]+__/,''):Date.now().toString(36);
+  // Check if this belongs to another teacher
+  const existingCls=editingCls?classes[editingCls]:null;
+  const ownerUid=existingCls?._ownerUid||CU.uid;
+  if(ownerUid!==CU.uid){
+    // Editing another teacher's class — update their data directly
+    classes[editingCls]={...classes[editingCls],name,students};
+    const existingSnap=await get(ref(db,'users/'+ownerUid+'/data'));
+    const existingData=existingSnap.exists()?existingSnap.val():{};
+    const updatedClasses={...existingData.classes||{},[rawId]:{name,students}};
+    await set(ref(db,'users/'+ownerUid+'/data'),{classes:updatedClasses,records:existingData.records||{}});
+    if(allUsersData[ownerUid]){
+      if(!allUsersData[ownerUid].data)allUsersData[ownerUid].data={};
+      allUsersData[ownerUid].data.classes=updatedClasses;
+    }
+  } else {
+    // Own class — update local then save classes only
+    classes[rawId]={name,students,_ownerUid:CU.uid,_ownerCid:rawId};
+    await saveData(true,'classes');
+  }
+  fillClassSel();
+  step('cls-sel').value=rawId;
+  onClassChange();
+  closeClassModal();
+  toast(editingCls?'Class updated ✓':'Class created ✓');
+};
+
+window.confirmDelCls=function(id){
+  step('confirm-txt').textContent=`Delete class "${classes[id]?.name}"? This cannot be undone.`;
+  step('confirm-ok').onclick=async()=>{
+    const cls=classes[id];
+    const ownerUid=cls?._ownerUid||CU.uid;
+    const realId=id.replace(/^[^_]+__/,'');
+    delete classes[id];
+    if(ownerUid!==CU.uid){
+      // Delete from another teacher's account
+      const existingSnap=await get(ref(db,'users/'+ownerUid+'/data'));
+      const existingData=existingSnap.exists()?existingSnap.val():{};
+      const updatedClasses={...existingData.classes||{}};
+      delete updatedClasses[realId];
+      await set(ref(db,'users/'+ownerUid+'/data'),{classes:updatedClasses,records:existingData.records||{}});
+    } else {
+      await saveData(true,'classes');
+    }
+    fillClassSel();
+    if(curClassId===id){curClassId=null;step('manage-btn').style.display='none';step('list-content').innerHTML='';}
+    closeConfirm();renderClsList();toast('Class deleted');
+  };
+  step('confirm-ov').classList.add('open');
+};
+
+// TABLE
+function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+function wkAvg(name){
+  const recs=records[name]||[];const now=new Date();
+  const day=now.getDay(),diff=day===0?-6:1-day;
+  const mon=new Date(now);mon.setDate(now.getDate()+diff);mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  const w=recs.filter(r=>{const d=new Date(r.date);return d>=mon&&d<=sun&&r.score;});
+  return w.length?w.reduce((s,r)=>s+(r.score||0),0)/w.length:null;
+}
+function latDor(name){
+  const recs=records[name]||[];
+  for(let i=recs.length-1;i>=0;i--){
+    const r=recs[i];
+    if(r.dorAttempts?.length&&r.dorAttempts[0].juz?.length)return r.dorAttempts[0].juz;
+    if(r.dorJuz?.length)return r.dorJuz;
+  }
+  return[];
+}
+function detToday(name){const t=dk(new Date());return(records[name]||[]).some(r=>dk(new Date(r.date))===t&&r.detention);}
+function sbadge(s){
+  if(s===null||s===undefined)return`<span class="score-badge empty">–</span>`;
+  const r=Math.round(s),d=Number.isInteger(s)?s:s.toFixed(1);
+  return`<span class="score-badge s${Math.min(5,Math.max(1,r))}">${d}</span>`;
+}
+
+function renderTable(){
+  if(!curClassId||!curStudents.length){
+    step('list-content').innerHTML=`<div class="page-label"><span class="page-label-text">${classes[curClassId]?.name||'Class'}</span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Current Dor</th><th>Weekly Avg</th><th class="center">Absent</th></tr></thead><tbody><tr><td colspan="4" class="empty-state"><strong>No students yet</strong>Click Manage Class to add students.</td></tr></tbody></table></div>`;
+    return;
+  }
+  const rows=curStudents.map(name=>{
+    const sn=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const dor=latDor(name),avg=wkAvg(name),det=detToday(name),abs=!!absentToday[name];
+    return`<tr class="${abs?'absent-row':''}">
+      <td class="td-name" onclick="openStu('${sn}')"><div class="avatar">${ini(name)}</div>${name}${det?'<span class="det-flag">DET</span>':''}${abs?'<span class="absent-badge">ABSENT</span>':''}</td>
+      <td class="td-dor" onclick="openStu('${sn}')">${dor.length?dor.join(', '):'—'}</td>
+      <td class="td-score" onclick="openStu('${sn}')">${sbadge(avg)}</td>
+      <td class="td-absent"><input type="checkbox" class="absent-cb" ${abs?'checked':''} onchange="togAbsent('${sn}',this.checked)" onclick="event.stopPropagation()"/></td>
+    </tr>`;
+  }).join('');
+  step('list-content').innerHTML=`<div class="page-label"><span class="page-label-text">${classes[curClassId]?.name||'Students'}</span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Current Dor</th><th>Weekly Avg</th><th class="center">Absent</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+window.togAbsent=function(name,v){absentToday[name]=v;renderTable();};
+
+// STUDENT DETAIL
+window.openStu=function(name){
+  cur=name;curTab=5;selScore=null;todayEditIdx=-1;
+  selJuz.dor=new Set();selJuz.sp=new Set();mkC.dor={};
+  dorAttempts=[];spAttempts=[];
+  SIDS.forEach(id=>{const e=step(id);if(e)e.value=0;});
+  step('list-view').style.display='none';step('detail-view').style.display='block';
+  step('d-avatar').textContent=ini(name);step('d-name').textContent=name;
+  const recs=records[name]||[];
+  step('d-meta').textContent=recs.length?`${recs.length} session${recs.length>1?'s':''} recorded`:'No sessions yet';
+  step('d-today').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+
+  // Check if there is already a record for today
+  const todayKey=dk(new Date());
+  const todayIdx=recs.findIndex(r=>dk(new Date(r.date))===todayKey);
+
+  if(todayIdx>=0){
+    // Today's record exists — load it into the form for editing
+    todayEditIdx=todayIdx;
+    const r=recs[todayIdx];
+    // Restore score
+    selScore=r.score??null;
+    document.querySelectorAll('.sc-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.score)===selScore));
+    // Restore comment + detention
+    step('comment').value=r.comment||'';
+    step('det-chk').checked=!!r.detention;
+    const sdChk=step('sun-det-chk');if(sdChk)sdChk.checked=!!r.sundayDetention;
+    // Restore Sabak
+    const slEl=step('sab-lines');if(slEl)slEl.value=r.sabakLines||0;
+    const smEl=step('sab-mk');if(smEl)smEl.value=r.sabakMistakes||0;
+    // Restore Dor attempts
+    const dorAtts=r.dorAttempts?.length?r.dorAttempts:[{juz:r.dorJuz||[],mistakes:r.dorMistakes||[]}];
+    dorAttempts=dorAtts.map(att=>{
+      const sj=new Set(att.juz||[]);
+      const mk={};(att.mistakes||[]).forEach(m=>{mk[m.section]=m.mistakes;});
+      return{selJuz:sj,mkC:mk};
+    });
+    if(!dorAttempts.length)dorAttempts=[{selJuz:new Set(),mkC:{}}];
+    // Restore SP attempts
+    const spAtts=r.spAttempts?.length?r.spAttempts:[{juz:r.spJuz||[],pages:r.spPages||0,mistakes:r.spMistakes||0}];
+    spAttempts=spAtts.map(att=>({selJuz:new Set(att.juz||[]),pages:att.pages||0,mistakes:att.mistakes||0}));
+    if(!spAttempts.length)spAttempts=[{selJuz:new Set(),pages:0,mistakes:0}];
+    // Show editing banner
+    step('today-mode-banner').style.display='flex';
+    step('today-new-banner').style.display='none';
+  } else {
+    // No record today — blank form
+    todayEditIdx=-1;
+    step('comment').value='';step('det-chk').checked=false;
+    const sdChk=step('sun-det-chk');if(sdChk)sdChk.checked=false;
+    document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+    dorAttempts=[{selJuz:new Set(),mkC:{}}];
+    spAttempts=[{selJuz:new Set(),pages:0,mistakes:0}];
+    step('today-mode-banner').style.display='none';
+    step('today-new-banner').style.display='flex';
+  }
+
+  buildDD('dor','');buildDD('sp','');
+  updTT('dor');updTT('sp');renderMk();
+  renderAttempts('dor');renderAttempts('sp');
+  setTab(5);renderHist();window.scrollTo({top:0,behavior:'smooth'});
+};
+window.goBack=async function(){
+  closeAllDD();
+  if(cur){
+    if(!records[cur])records[cur]=[];
+    if(todayEditIdx>=0){
+      // Editing today's existing record — update in place, preserve original timestamp
+      const origDate=records[cur][todayEditIdx]?.date||new Date().toISOString();
+      records[cur][todayEditIdx]={...buildEntry(),date:origDate};
+    } else {
+      // New record for today
+      records[cur].push(buildEntry());
+    }
+    await saveData(true,'records');
+    step('d-meta') && (step('d-meta').textContent=`${records[cur].length} session${records[cur].length>1?'s':''} recorded`);
+  }
+  step('detail-view').style.display='none';step('list-view').style.display='block';
+  renderTable();window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ATTEMPTS
+function renderAttempts(type){
+  const wrap=step(type+'-attempts-wrap');if(!wrap)return;
+  const attempts=type==='dor'?dorAttempts:spAttempts;
+  wrap.innerHTML='';
+  attempts.forEach((att,i)=>{
+    const div=document.createElement('div');
+    div.className='attempt-block';
+    const label=i===0?'':`Attempt ${i+1}`;
+    const canRemove=i>0;
+    if(type==='dor'){
+      // Dor attempt: juz selector + per-section mistakes
+      const ddId='dor-att-'+i;
+      const mkId='dor-att-mk-'+i;
+      const selArr=[...att.selJuz].sort(sortS);
+      const mkHtml=selArr.length?selArr.map(sec=>`
+        <div class="mk-row"><span class="mk-row-lbl">${sec}</span>
+          <div class="stepper" style="flex:1;max-width:150px;">
+            <button class="sb m" onclick="adjAttMk('dor',${i},'${sec}',-1)">−</button><div class="sdiv"></div>
+            <input class="si" type="number" id="dam-${i}-${sec.replace('.','_')}" value="${att.mkC[sec]||0}" min="0" oninput="syncAttMk('dor',${i},'${sec}',this.value)"/>
+            <div class="sdiv"></div><button class="sb p" onclick="adjAttMk('dor',${i},'${sec}',1)">+</button>
+          </div></div>`).join(''):'<p class="no-sel">Select sections to log mistakes.</p>';
+      div.innerHTML=`
+        ${label||canRemove?`<div class="attempt-label"><span>${label}</span>${canRemove?`<button class="rm-attempt-btn" onclick="removeAttempt('dor',${i})">✕ Remove</button>`:''}</div>`:''}
+        <div class="fg" style="margin-bottom:8px;"><label class="fl">Juz Sections</label>
+          <div class="ms-wrap">
+            <button type="button" class="ms-trig" id="${ddId}-trig" onclick="toggleAttDD('dor',${i})"><span class="tt" id="${ddId}-tt">${selArr.length?selArr.join(', '):'Select…'}</span><span class="arr">▼</span></button>
+            <div class="ms-dd" id="${ddId}-dd">
+              <div class="ms-search-wrap"><input class="ms-search" type="text" placeholder="Filter…" id="${ddId}-s" oninput="filterAttDD('dor',${i},this.value)" onclick="event.stopPropagation()"/></div>
+              <div class="ms-list" id="${ddId}-list"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mk-wrap" id="${mkId}">${mkHtml}</div>`;
+      buildAttDD('dor',i,'');
+    } else {
+      // SP attempt: juz selector + page + mistakes
+      const ddId='sp-att-'+i;
+      const selArr=[...att.selJuz].sort(sortS);
+      div.innerHTML=`
+        ${label||canRemove?`<div class="attempt-label"><span>${label}</span>${canRemove?`<button class="rm-attempt-btn" onclick="removeAttempt('sp',${i})">✕ Remove</button>`:''}</div>`:''}
+        <div class="fg" style="margin-bottom:8px;"><label class="fl">Juz Sections (optional)</label>
+          <div class="ms-wrap">
+            <button type="button" class="ms-trig" id="${ddId}-trig" onclick="toggleAttDD('sp',${i})"><span class="tt" id="${ddId}-tt">${selArr.length?selArr.join(', '):'Select…'}</span><span class="arr">▼</span></button>
+            <div class="ms-dd" id="${ddId}-dd">
+              <div class="ms-search-wrap"><input class="ms-search" type="text" placeholder="Filter…" id="${ddId}-s" oninput="filterAttDD('sp',${i},this.value)" onclick="event.stopPropagation()"/></div>
+              <div class="ms-list" id="${ddId}-list"></div>
+            </div>
+          </div>
+        </div>
+        <hr class="sp-div"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Page</label>
+            <div class="stepper"><button class="sb m" onclick="adjAttVal('sp',${i},'pages',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="sp-att-pg-${i}" value="${att.pages||0}" min="0" oninput="syncAttVal('sp',${i},'pages',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="adjAttVal('sp',${i},'pages',1)">+</button></div>
+          </div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Mistakes</label>
+            <div class="stepper"><button class="sb m" onclick="adjAttVal('sp',${i},'mistakes',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="sp-att-mk-${i}" value="${att.mistakes||0}" min="0" oninput="syncAttVal('sp',${i},'mistakes',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="adjAttVal('sp',${i},'mistakes',1)">+</button></div>
+          </div>
+        </div>`;
+      buildAttDD('sp',i,'');
+    }
+    wrap.appendChild(div);
+  });
+  // Reset the add-attempt checkbox
+  const cb=step(type+'-add-cb');if(cb)cb.checked=false;
+}
+
+window.addAttempt=function(type){
+  const cb=step(type+'-add-cb');if(cb)cb.checked=false;
+  if(type==='dor'){
+    dorAttempts.push({selJuz:new Set(),mkC:{}});
+  } else {
+    spAttempts.push({selJuz:new Set(),pages:0,mistakes:0});
+  }
+  renderAttempts(type);
+};
+
+window.removeAttempt=function(type,i){
+  if(type==='dor')dorAttempts.splice(i,1);
+  else spAttempts.splice(i,1);
+  renderAttempts(type);
+};
+
+// Attempt dropdown helpers
+function buildAttDD(type,attIdx,q){
+  const ddId=(type==='dor'?'dor':'sp')+'-att-'+attIdx;
+  const listEl=step(ddId+'-list');if(!listEl)return;
+  const att=type==='dor'?dorAttempts[attIdx]:spAttempts[attIdx];
+  if(!att)return;
+  listEl.innerHTML='';
+  const qL=(q||'').trim().toLowerCase();let curJ=null,any=false;
+  JUZ.forEach(opt=>{
+    if(qL&&!opt.toLowerCase().includes(qL)&&!opt.split('.')[0].includes(qL))return;
+    any=true;const jn=opt.split('.')[0];
+    if(jn!==curJ){curJ=jn;const h=document.createElement('div');h.className='dd-gh';h.textContent='Juz '+jn;listEl.appendChild(h);}
+    const isSel=att.selJuz.has(opt);
+    const div=document.createElement('div');div.className='dd-opt'+(isSel?' sel':'');
+    div.innerHTML=`<input type="checkbox" ${isSel?'checked':''}> ${opt}`;
+    div.onclick=e=>{
+      e.stopPropagation();const cb=div.querySelector('input');
+      if(att.selJuz.has(opt)){att.selJuz.delete(opt);if(type==='dor'&&att.mkC)delete att.mkC[opt];div.classList.remove('sel');cb.checked=false;}
+      else{att.selJuz.add(opt);if(type==='dor'&&att.mkC)att.mkC[opt]=0;div.classList.add('sel');cb.checked=true;}
+      // Update trigger text
+      const arr=[...att.selJuz].sort(sortS);
+      const ttEl=step(ddId+'-tt');if(ttEl)ttEl.textContent=arr.length?arr.join(', '):'Select…';
+      // Re-render mistake rows for dor
+      if(type==='dor'){const mkWrap=step('dor-att-mk-'+attIdx);if(mkWrap)renderAttMkRows(attIdx);}
+    };
+    listEl.appendChild(div);
+  });
+  if(!any){const e=document.createElement('div');e.className='dd-empty';e.textContent='No sections match.';listEl.appendChild(e);}
+}
+
+function renderAttMkRows(attIdx){
+  const att=dorAttempts[attIdx];if(!att)return;
+  const wrap=step('dor-att-mk-'+attIdx);if(!wrap)return;
+  const secs=[...att.selJuz].sort(sortS);
+  if(!secs.length){wrap.innerHTML='<p class="no-sel">Select sections to log mistakes.</p>';return;}
+  wrap.innerHTML=secs.map(sec=>`
+    <div class="mk-row"><span class="mk-row-lbl">${sec}</span>
+      <div class="stepper" style="flex:1;max-width:150px;">
+        <button class="sb m" onclick="adjAttMk('dor',${attIdx},'${sec}',-1)">−</button><div class="sdiv"></div>
+        <input class="si" type="number" id="dam-${attIdx}-${sec.replace('.','_')}" value="${att.mkC[sec]||0}" min="0" oninput="syncAttMk('dor',${attIdx},'${sec}',this.value)"/>
+        <div class="sdiv"></div><button class="sb p" onclick="adjAttMk('dor',${attIdx},'${sec}',1)">+</button>
+      </div></div>`).join('');
+}
+
+window.toggleAttDD=function(type,attIdx){
+  const ddId=(type==='dor'?'dor':'sp')+'-att-'+attIdx;
+  const dd=step(ddId+'-dd'),tr=step(ddId+'-trig');if(!dd||!tr)return;
+  const was=dd.classList.contains('open');closeAllDD();
+  if(!was){dd.classList.add('open');tr.classList.add('open');
+    const si=step(ddId+'-s');if(si){si.value='';buildAttDD(type,attIdx,'');setTimeout(()=>si.focus(),60);}
+  }
+};
+window.filterAttDD=function(type,attIdx,val){buildAttDD(type,attIdx,val);};
+
+window.adjAttMk=function(type,attIdx,sec,delta){
+  const att=dorAttempts[attIdx];if(!att)return;
+  if(att.mkC[sec]===undefined)att.mkC[sec]=0;
+  att.mkC[sec]=Math.max(0,att.mkC[sec]+delta);
+  const e=step('dam-'+attIdx+'-'+sec.replace('.','_'));if(e)e.value=att.mkC[sec];
+};
+window.syncAttMk=function(type,attIdx,sec,val){
+  const att=dorAttempts[attIdx];if(!att)return;
+  const n=parseInt(val);att.mkC[sec]=isNaN(n)||n<0?0:n;
+};
+window.adjAttVal=function(type,attIdx,field,delta){
+  const atts=type==='dor'?dorAttempts:spAttempts;
+  const att=atts[attIdx];if(!att)return;
+  att[field]=Math.max(0,(att[field]||0)+delta);
+  const id=type==='sp'?'sp-att-'+(field==='pages'?'pg':'mk')+'-'+attIdx:null;
+  if(id){const e=step(id);if(e)e.value=att[field];}
+};
+window.syncAttVal=function(type,attIdx,field,val){
+  const atts=type==='dor'?dorAttempts:spAttempts;
+  const att=atts[attIdx];if(!att)return;
+  const n=parseInt(val);att[field]=isNaN(n)||n<0?0:n;
+};
+
+// STEPPERS
+window.stepAdj=function(id,d){const e=step(id);if(!e)return;e.value=Math.max(0,(parseInt(e.value)||0)+d);};
+window.stepSync=function(id,v){const e=step(id);if(!e)return;const n=parseInt(v);if(isNaN(n)||n<0)e.value=0;};
+function gv(id){return parseInt(step(id)?.value)||0;}
+function sAdjSec(type,sec,d){if(mkC[type][sec]===undefined)mkC[type][sec]=0;mkC[type][sec]=Math.max(0,mkC[type][sec]+d);const e=step('mk-'+type+'-'+sec.replace('.','_'));if(e)e.value=mkC[type][sec];}
+function sSyncSec(type,sec,v){const n=parseInt(v);mkC[type][sec]=isNaN(n)||n<0?0:n;}
+window.sAdjSec=sAdjSec;window.sSyncSec=sSyncSec;
+
+// DROPDOWNS
+function sortS(a,b){const[aj,ap]=a.split('.').map(Number),[bj,bp]=b.split('.').map(Number);return aj-bj||ap-bp;}
+function buildDD(type,q,selSet,mkObj){
+  const sel=selSet||selJuz[type];
+  const le=step(type+'-list');if(!le)return;le.innerHTML='';
+  const qL=(q||'').trim().toLowerCase();let curJ=null,any=false;
+  JUZ.forEach(opt=>{
+    if(qL&&!opt.toLowerCase().includes(qL)&&!opt.split('.')[0].includes(qL))return;
+    any=true;const jn=opt.split('.')[0];
+    if(jn!==curJ){curJ=jn;const h=document.createElement('div');h.className='dd-gh';h.textContent='Juz '+jn;le.appendChild(h);}
+    const isSel=sel.has(opt);const div=document.createElement('div');
+    div.className='dd-opt'+(isSel?' sel':'');
+    div.innerHTML=`<input type="checkbox" ${isSel?'checked':''}> ${opt}`;
+    div.onclick=e=>{
+      e.stopPropagation();const cb=div.querySelector('input');
+      if(sel.has(opt)){sel.delete(opt);if(mkObj)delete mkObj[opt];else if(type==='dor')delete mkC.dor[opt];div.classList.remove('sel');cb.checked=false;}
+      else{sel.add(opt);if(mkObj)mkObj[opt]=mkObj[opt]??0;else if(type==='dor')mkC.dor[opt]=0;div.classList.add('sel');cb.checked=true;}
+      if(mkObj)renderEditMk();else{updTT(type);if(type==='dor')renderMk();}
+    };
+    le.appendChild(div);
+  });
+  if(!any){const e=document.createElement('div');e.className='dd-empty';e.textContent='No sections match.';le.appendChild(e);}
+}
+window.filterDD=function(type,v){
+  if(type.startsWith('e-'))buildDD('e-'+type.slice(2),v,eSJ[type.slice(2)],type.slice(2)==='dor'?eMkD:null);
+  else buildDD(type,v);
+};
+function updTT(type){
+  const e=step(type+'-tt');if(!e)return;const sel=selJuz[type];
+  if(!sel.size){e.textContent='Select…';e.classList.remove('hv');return;}
+  const arr=[...sel].sort(sortS);e.textContent=arr.length<=4?arr.join(', '):arr.slice(0,4).join(', ')+` +${arr.length-4}`;e.classList.add('hv');
+}
+window.toggleDD=function(type){
+  const dd=step(type+'-dd'),tr=step(type+'-trig');if(!dd||!tr)return;
+  const was=dd.classList.contains('open');closeAllDD();
+  if(!was){dd.classList.add('open');tr.classList.add('open');
+    const si=step(type.replace('e-','')+'-s')||(type.startsWith('e-')?step('e-'+type.slice(2)+'-s'):null);
+    if(si){si.value='';buildDD(type,'',type.startsWith('e-')?eSJ[type.slice(2)]:null,type.startsWith('e-')&&type.slice(2)==='dor'?eMkD:null);setTimeout(()=>si.focus(),60);}
+  }
+};
+function closeAllDD(){document.querySelectorAll('.ms-dd.open').forEach(d=>{d.classList.remove('open');d.closest('.ms-wrap')?.querySelector('.ms-trig')?.classList.remove('open');});}
+document.addEventListener('click',e=>{if(!e.target.closest('.ms-wrap'))closeAllDD();});
+
+// DOR MISTAKES
+function renderMk(){
+  const c=step('dor-mk');if(!c)return;
+  const secs=[...selJuz.dor].sort(sortS);
+  if(!secs.length){c.innerHTML='<p class="no-sel">Select sections to log mistakes.</p>';return;}
+  c.innerHTML='<div class="mk-lbl">Mistakes per section</div>'+secs.map(sec=>{
+    if(mkC.dor[sec]===undefined)mkC.dor[sec]=0;
+    const id='mk-dor-'+sec.replace('.','_');
+    return`<div class="mk-row"><span class="mk-row-lbl">${sec}</span><div class="stepper" style="flex:1;max-width:150px;">
+      <button class="sb m" onclick="sAdjSec('dor','${sec}',-1)">−</button><div class="sdiv"></div>
+      <input class="si" type="number" id="${id}" value="${mkC.dor[sec]}" min="0" oninput="sSyncSec('dor','${sec}',this.value)"/>
+      <div class="sdiv"></div><button class="sb p" onclick="sAdjSec('dor','${sec}',1)">+</button>
+    </div></div>`;
+  }).join('');
+}
+
+
+// SCORE
+window.setScore=function(s){selScore=s;document.querySelectorAll('.sc-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.score)===s));};
+
+// SAVE
+function buildEntry(){
+  // Build dor attempts array
+  const dorAttemptData=dorAttempts.map(att=>{
+    const juz=[...att.selJuz].sort(sortS);
+    return{juz,mistakes:juz.map(s=>({section:s,mistakes:att.mkC[s]||0}))};
+  }).filter(a=>a.juz.length>0);
+  // Backward compat: also set dorJuz/dorMistakes from first attempt
+  const firstDor=dorAttemptData[0]||{juz:[],mistakes:[]};
+  // Build sp attempts array
+  const spAttemptData=spAttempts.map(att=>{
+    const juz=[...att.selJuz].sort(sortS);
+    return{juz,pages:att.pages||0,mistakes:att.mistakes||0};
+  }).filter(a=>a.juz.length||a.pages||a.mistakes);
+  const firstSP=spAttemptData[0]||{juz:[],pages:0,mistakes:0};
+  return{
+    date:new Date().toISOString(),
+    dorAttempts:dorAttemptData,
+    dorJuz:firstDor.juz,dorMistakes:firstDor.mistakes,
+    spAttempts:spAttemptData,
+    spJuz:firstSP.juz,spMistakes:firstSP.mistakes,spPages:firstSP.pages,
+    sabakLines:gv('sab-lines'),sabakMistakes:gv('sab-mk'),
+    score:selScore,detention:step('det-chk').checked,sundayDetention:step('sun-det-chk')?.checked||false,comment:step('comment').value.trim()
+  };
+}
+window.saveRecord=async function(silent){
+  if(!cur)return;
+  if(!records[cur])records[cur]=[];
+  records[cur].push(buildEntry());
+  await saveData(true,'records');
+  step('d-meta').textContent=`${records[cur].length} session${records[cur].length>1?'s':''} recorded`;
+  if(!silent)toast('Saved ✓');
+  renderHist();
+};
+
+// HISTORY
+window.switchTab=function(d){curTab=d;setTab(d);renderHist();};
+function setTab(d){[5,30,0].forEach(t=>{const b=step('tab-'+t);if(b)b.classList.toggle('active',t===d);});}
+function getFilt(){
+  const all=(records[cur]||[]).slice().reverse();if(curTab===0)return all;
+  const c=new Date();c.setDate(c.getDate()-curTab);c.setHours(0,0,0,0);
+  return all.filter(r=>new Date(r.date)>=c);
+}
+function fd(d){return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+function fdt(d){return fd(d)+' · '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+function ad(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function dk(d){return d.toISOString().slice(0,10);}
+
+function renderHist(){
+  const c=step('hist-list');if(!c)return;
+  const recs=getFilt();
+  if(!recs.length){c.innerHTML='<p class="no-hist">No sessions in this period.</p>';return;}
+  c.innerHTML=recs.map(r=>{
+    const d=new Date(r.date),detD=r.detention?fd(ad(d,1)):null,sunDetD=r.sundayDetention?'Sunday':null;
+    const ri=(records[cur]||[]).findIndex(x=>x.date===r.date);
+    const dc=(r.dorMistakes||[]).map(m=>`<span class="h-chip">${m.section} <span class="err">${m.mistakes}</span></span>`).join('');
+    const sh=r.spJuz?.length||r.spPages||r.spMistakes;
+    return`<div class="h-entry">
+      <div class="h-ehdr"><div class="h-date">${fdt(d)}${r.detention?`<span class="det-tag">⚠ DET ${detD}</span>`:''}${r.sundayDetention?`<span class="det-tag" style="background:rgba(181,72,67,.18);border-color:rgba(181,72,67,.5);">⚠ SUN DET</span>`:''}</div>
+        <div class="h-eacts"><button class="edit-btn" onclick="openEdit(${ri})">✎ Edit</button><button class="del-btn" onclick="confDel(${ri})">✕ Del</button></div>
+      </div>
+      ${(r.dorAttempts?.length>0?r.dorAttempts:[{juz:r.dorJuz||[],mistakes:r.dorMistakes||[]}]).filter(a=>a.juz?.length).map((att,ai)=>{
+        const chips=(att.mistakes||[]).map(m=>`<span class="h-chip">${m.section} <span class="err">${m.mistakes}</span></span>`).join('');
+        return`<div class="h-sec"><div class="h-sec-t">Dor${r.dorAttempts?.length>1?' — Attempt '+(ai+1):''} — ${att.juz.join(', ')}</div><div class="h-chips">${chips||'<span style="font-size:11px;color:var(--text-dim)">No mistakes</span>'}</div></div>`;
+      }).join('')}
+      ${(r.spAttempts?.length>0?r.spAttempts:[{juz:r.spJuz||[],pages:r.spPages||0,mistakes:r.spMistakes||0}]).filter(a=>a.juz?.length||a.pages||a.mistakes).map((att,ai)=>`
+        <div class="h-sec"><div class="h-sec-t">Sabak Para${r.spAttempts?.length>1?' — Attempt '+(ai+1):''}${att.juz?.length?' — '+att.juz.join(', '):''}</div>
+        <div class="h-chips">
+          ${att.juz?.length?`<span class="h-chip">Mistakes <span class="err">${att.mistakes??0}</span></span>`:''}
+          ${att.pages?`<span class="h-chip">Pg ${att.pages}</span>`:''}
+          ${!att.juz?.length&&att.mistakes?`<span class="h-chip">Mistakes <span class="err">${att.mistakes}</span></span>`:''}
+        </div></div>`).join('')}
+      <div class="h-items">
+        ${(r.sabakLines||r.sabakMistakes)?`<div class="h-item"><span class="h-item-l">Lines</span><span class="h-item-v">${r.sabakLines}</span></div><div class="h-item"><span class="h-item-l">Mistakes</span><span class="h-item-v">${r.sabakMistakes}</span></div>`:''}
+        <div class="h-item"><span class="h-item-l">Score</span><span class="h-item-v">${r.score??'—'}/5</span></div>
+        ${r.comment?`<div class="h-item" style="flex:1;min-width:100px"><span class="h-item-l">Comment</span><span class="h-item-v">${r.comment}</span></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// DELETE
+window.confDel=function(idx){
+  delIdx=idx;const r=records[cur][idx];
+  step('confirm-txt').textContent=`Delete session from ${fd(new Date(r.date))}? Cannot be undone.`;
+  step('confirm-ok').onclick=async()=>{records[cur].splice(delIdx,1);await saveData(true,'records');closeConfirm();step('d-meta').textContent=`${records[cur].length} session${records[cur].length>1?'s':''} recorded`;renderHist();renderTable();toast('Deleted');};
+  step('confirm-ov').classList.add('open');
+};
+window.closeConfirm=function(){step('confirm-ov').classList.remove('open');delIdx=-1;};
+
+// EDIT
+window.openEdit=function(idx){
+  editIdx=idx;const r=records[cur][idx];
+  step('edit-sub').textContent=cur+' · '+fdt(new Date(r.date));
+  eSJ={dor:new Set([...(r.dorJuz||[])]),sp:new Set([...(r.spJuz||[])])};
+  eMkD={};(r.dorMistakes||[]).forEach(m=>{eMkD[m.section]=m.mistakes;});eScore=r.score??null;
+  step('edit-body').innerHTML=`
+    <div class="edit-sec dor"><div class="edit-sec-title">Dor</div>
+      <div class="fg" style="margin-bottom:8px;"><label class="fl">Juz Sections</label>
+        <div class="ms-wrap"><button type="button" class="ms-trig" id="e-dor-trig" onclick="toggleDD('e-dor')"><span class="tt" id="e-dor-tt">Select…</span><span class="arr">▼</span></button>
+          <div class="ms-dd" id="e-dor-dd"><div class="ms-search-wrap"><input class="ms-search" type="text" id="e-dor-s" placeholder="Filter…" oninput="filterDD('e-dor',this.value)" onclick="event.stopPropagation()"/></div><div class="ms-list" id="e-dor-list"></div></div>
+        </div></div>
+      <div class="mk-wrap" id="e-dor-mk"></div></div>
+    <div class="edit-sec sp"><div class="edit-sec-title">Sabak Para</div>
+      <div class="fg" style="margin-bottom:8px;"><label class="fl">Juz Sections</label>
+        <div class="ms-wrap"><button type="button" class="ms-trig" id="e-sp-trig" onclick="toggleDD('e-sp')"><span class="tt" id="e-sp-tt">Select…</span><span class="arr">▼</span></button>
+          <div class="ms-dd" id="e-sp-dd"><div class="ms-search-wrap"><input class="ms-search" type="text" id="e-sp-s" placeholder="Filter…" oninput="filterDD('e-sp',this.value)" onclick="event.stopPropagation()"/></div><div class="ms-list" id="e-sp-list"></div></div>
+        </div></div>
+      <div class="two-col" style="margin-bottom:8px;">
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Page</label><div class="stepper"><button class="sb m" onclick="stepAdj('e-sp-pg',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="e-sp-pg" value="${r.spPages??0}" min="0" oninput="stepSync('e-sp-pg',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="stepAdj('e-sp-pg',1)">+</button></div></div>
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Mistakes</label><div class="stepper"><button class="sb m" onclick="stepAdj('e-sp-mk',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="e-sp-mk" value="${r.spMistakes??0}" min="0" oninput="stepSync('e-sp-mk',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="stepAdj('e-sp-mk',1)">+</button></div></div>
+      </div></div>
+    <div class="edit-sec sabak"><div class="edit-sec-title">Sabak</div>
+      <div class="two-col">
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Lines</label><div class="stepper"><button class="sb m" onclick="stepAdj('e-sab-lines',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="e-sab-lines" value="${r.sabakLines??0}" min="0" oninput="stepSync('e-sab-lines',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="stepAdj('e-sab-lines',1)">+</button></div></div>
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Mistakes</label><div class="stepper"><button class="sb m" onclick="stepAdj('e-sab-mk',-1)">−</button><div class="sdiv"></div><input class="si" type="number" id="e-sab-mk" value="${r.sabakMistakes??0}" min="0" oninput="stepSync('e-sab-mk',this.value)"/><div class="sdiv"></div><button class="sb p" onclick="stepAdj('e-sab-mk',1)">+</button></div></div>
+      </div></div>
+    <div class="edit-sec daily"><div class="edit-sec-title">Daily Assessment</div>
+      <div class="two-col" style="margin-bottom:10px;">
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Score</label>
+          <div class="score-row" id="e-sc-row">${[1,2,3,4,5].map(s=>`<button class="sc-btn${s===eScore?' active':''}" data-score="${s}" onclick="setESc(${s})">${s}</button>`).join('')}</div></div>
+        <div class="fg" style="margin-bottom:0;"><label class="fl">Comment</label><textarea id="e-comment" style="min-height:54px;">${r.comment||''}</textarea></div>
+      </div>
+      <div class="det-row"><input type="checkbox" id="e-det" ${r.detention?'checked':''}/><label class="det-lbl" for="e-det">Detention<span>Report will note detention on the following day.</span></label></div>
+    </div>`;
+  buildDD('e-dor','',eSJ.dor,eMkD);buildDD('e-sp','',eSJ.sp,null);updETT('dor');updETT('sp');renderEditMk();
+  step('edit-modal').classList.add('open');document.body.style.overflow='hidden';
+};
+window.setESc=function(s){eScore=s;document.querySelectorAll('#e-sc-row .sc-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.score)===s));};
+function updETT(type){
+  const e=step('e-'+type+'-tt');if(!e)return;const sel=eSJ[type];
+  if(!sel.size){e.textContent='Select…';e.classList.remove('hv');return;}
+  const arr=[...sel].sort(sortS);e.textContent=arr.length<=4?arr.join(', '):arr.slice(0,4).join(', ')+` +${arr.length-4}`;e.classList.add('hv');
+}
+function renderEditMk(){
+  const c=step('e-dor-mk');if(!c)return;
+  const secs=[...eSJ.dor].sort(sortS);
+  if(!secs.length){c.innerHTML='<p class="no-sel">Select sections.</p>';return;}
+  c.innerHTML='<div class="mk-lbl">Mistakes per section</div>'+secs.map(sec=>{
+    if(eMkD[sec]===undefined)eMkD[sec]=0;
+    return`<div class="mk-row"><span class="mk-row-lbl">${sec}</span><div class="stepper" style="flex:1;max-width:150px;">
+      <button class="sb m" onclick="eMA('${sec}',-1)">−</button><div class="sdiv"></div>
+      <input class="si" type="number" id="em-${sec.replace('.','_')}" value="${eMkD[sec]}" min="0" oninput="eMS('${sec}',this.value)"/>
+      <div class="sdiv"></div><button class="sb p" onclick="eMA('${sec}',1)">+</button>
+    </div></div>`;
+  }).join('');
+}
+window.eMA=function(sec,d){if(eMkD[sec]===undefined)eMkD[sec]=0;eMkD[sec]=Math.max(0,eMkD[sec]+d);const e=step('em-'+sec.replace('.','_'));if(e)e.value=eMkD[sec];};
+window.eMS=function(sec,v){const n=parseInt(v);eMkD[sec]=isNaN(n)||n<0?0:n;};
+window.saveEdit=async function(){
+  if(editIdx<0||!cur)return;
+  const orig=records[cur][editIdx];
+  const dj=[...eSJ.dor].sort(sortS),sj=[...eSJ.sp].sort(sortS);
+  records[cur][editIdx]={date:orig.date,dorJuz:dj,dorMistakes:dj.map(s=>({section:s,mistakes:eMkD[s]||0})),spJuz:sj,spMistakes:parseInt(step('e-sp-mk')?.value)||0,spPages:parseInt(step('e-sp-pg')?.value)||0,sabakLines:parseInt(step('e-sab-lines')?.value)||0,sabakMistakes:parseInt(step('e-sab-mk')?.value)||0,score:eScore,detention:step('e-det')?.checked||false,sundayDetention:step('e-sun-det')?.checked||false,comment:step('e-comment')?.value.trim()||''};
+  await saveData(true,'records');closeEdit();renderHist();renderTable();toast('Updated ✓');
+};
+window.closeEdit=function(){step('edit-modal').classList.remove('open');document.body.style.overflow='';editIdx=-1;};
+
+// REPORTS
+function r2t(r){
+  const d=new Date(r.date),detD=r.detention?fd(ad(d,1)):null,sunDetD=r.sundayDetention?'Sunday':null;
+  const lines=[`${cur}  ·  ${fd(d)}`,``];
+  const dorAtts=r.dorAttempts?.length?r.dorAttempts:[{juz:r.dorJuz||[],mistakes:r.dorMistakes||[]}];
+  dorAtts.filter(a=>a.juz?.length).forEach((att,ai)=>{
+    const ms=(att.mistakes||[]).map(m=>`${m.section}: ${m.mistakes}`).join(', ');
+    const label=dorAtts.length>1?`Dor (Attempt ${ai+1})`:'Dor';
+    lines.push(`${label}: ${att.juz.join(', ')}${ms?'  |  Mistakes — '+ms:''}`);
+  });
+  const spAtts=r.spAttempts?.length?r.spAttempts:[{juz:r.spJuz||[],pages:r.spPages||0,mistakes:r.spMistakes||0}];
+  spAtts.filter(a=>a.juz?.length||a.pages||a.mistakes).forEach((att,ai)=>{
+    const label=spAtts.length>1?`Sabak Para (Attempt ${ai+1})`:'Sabak Para';
+    let sp=label+':';if(att.juz?.length)sp+=` ${att.juz.join(', ')}`;if(att.mistakes)sp+=`  |  Mistakes: ${att.mistakes}`;if(att.pages)sp+=`  |  Page ${att.pages}`;lines.push(sp);
+  });
+  if(r.sabakLines||r.sabakMistakes)lines.push(`Sabak: ${r.sabakLines} lines  |  Mistakes: ${r.sabakMistakes}`);
+  lines.push(``);lines.push(`Score: ${r.score??'—'}/5`);
+  if(r.comment)lines.push(`Comment: ${r.comment}`);
+  if(r.detention)lines.push(`Detention: ${detD}`);
+  if(r.sundayDetention)lines.push(`Sunday Detention: Your child has Sunday detention.`);
+  return lines.join('\n');
+}
+function todayTxt(){
+  const now=new Date(),sabL=gv('sab-lines'),sabMk=gv('sab-mk');
+  const det=step('det-chk').checked,cmt=step('comment').value.trim();
+  const lines=[`${cur}  ·  ${fd(now)}`,``];
+  dorAttempts.filter(a=>a.selJuz.size>0).forEach((att,ai)=>{
+    const juz=[...att.selJuz].sort(sortS);
+    const ms=juz.map(s=>`${s}: ${att.mkC[s]||0}`).join(', ');
+    const label=dorAttempts.length>1?`Dor (Attempt ${ai+1})`:'Dor';
+    lines.push(`${label}: ${juz.join(', ')}  |  Mistakes — ${ms}`);
+  });
+  spAttempts.filter(a=>a.selJuz.size||a.pages||a.mistakes).forEach((att,ai)=>{
+    const juz=[...att.selJuz].sort(sortS);
+    const label=spAttempts.length>1?`Sabak Para (Attempt ${ai+1})`:'Sabak Para';
+    let sp=label+':';if(juz.length)sp+=` ${juz.join(', ')}`;if(att.mistakes)sp+=`  |  Mistakes: ${att.mistakes}`;if(att.pages)sp+=`  |  Page ${att.pages}`;lines.push(sp);
+  });
+  if(sabL||sabMk)lines.push(`Sabak: ${sabL} lines  |  Mistakes: ${sabMk}`);
+  lines.push(``);lines.push(`Score: ${selScore??'—'}/5`);
+  if(cmt)lines.push(`Comment: ${cmt}`);
+  if(det)lines.push(`Detention: ${fd(ad(now,1))}`);
+  if(step('sun-det-chk')?.checked)lines.push(`Sunday Detention: Your child has Sunday detention.`);
+  return lines.join('\n');
+}
+function histTxt(){
+  const recs=getFilt(),label=curTab===0?'All':`Last ${curTab} Days`;
+  const out=[`${cur}  ·  History (${label})  ·  Exported ${fd(new Date())}`,``];
+  if(!recs.length){out.push('No sessions.');return out.join('\n');}
+  recs.forEach(r=>{out.push(r2t(r));out.push('');});
+  return out.join('\n').trimEnd();
+}
+window.dlTxt=async function(type){
+  if(type==='today')await window.saveRecord(true);
+  const txt=type==='today'?todayTxt():histTxt();
+  const label=type==='today'?'today':(curTab===0?'all':`${curTab}d`);
+  const blob=new Blob([txt],{type:'application/octet-stream'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=(cur||'report').replace(/\s/g,'_')+'_'+label+'.txt';
+  document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+  toast(type==='today'?'Saved & downloaded ✓':'Downloaded ✓');
+};
+window.viewReport=async function(type){
+  if(type==='today')await window.saveRecord(true);
+  rptTxt=type==='today'?todayTxt():histTxt();
+  step('rpt-title').textContent=type==='today'?`Today — ${cur}`:`History — ${cur}`;
+  step('rpt-content').textContent=rptTxt;
+  step('copy-ok').textContent='';
+  step('rpt-dl-btn').onclick=()=>window.dlTxt(type);
+  step('rpt-modal').classList.add('open');document.body.style.overflow='hidden';
+};
+window.closeReport=function(){step('rpt-modal').classList.remove('open');document.body.style.overflow='';};
+window.copyReport=function(){
+  if(!rptTxt)return;
+  const done=()=>{step('copy-ok').textContent='Copied ✓';setTimeout(()=>step('copy-ok').textContent='',2500);};
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(rptTxt).then(done);
+  else{const ta=document.createElement('textarea');ta.value=rptTxt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();}
+};
+
+
+/* ══════════════════════════════════════
+   PARENT VIEW
+══════════════════════════════════════ */
+const PARENT_DB_PATH='parents'; // users/{uid}/parentOf = {classId, studentName, linkedAt}
+
+async function checkAndRouteUser(){
+  // Called after auth — decide: admin/teacher or parent?
+  if(isAdmin){return 'teacher';}
+  // Check if user has any classes (teacher) or is registered as parent
+  const snap=await get(uRef('data'));
+  const hasClasses=snap.exists()&&Object.keys(snap.val()?.classes||{}).length>0;
+  // Check parent link
+  const parentSnap=await get(ref(db,'parents/'+CU.uid));
+  const parentOf=parentSnap.exists()?parentSnap.val():null;
+  if(parentOf){return {role:'parent',parentOf};}
+  if(hasClasses){return 'teacher';}
+  // New user — default to parent flow
+  return {role:'new_user'};
+}
+
+async function initParentView(parentOf){
+  // parentOf = {classId, ownerUid, studentName, linkedAt}
+  step('parent-photo').src=CU.photoURL||'';
+  step('parent-name').textContent=CU.displayName||CU.email;
+  const content=step('parent-content');
+  content.innerHTML='<div class="load-step">Loading student records…</div>';
+
+  // Load teacher's data
+  try{
+    const snap=await get(ref(db,'users/'+parentOf.ownerUid+'/data'));
+    const tData=snap.exists()?snap.val():{};
+    const stuRecords=tData.records?.[parentOf.studentName]||
+      tData.records?.[parentOf.studentName.replace(/\s+/g,'_')]||[];
+
+    renderParentView(parentOf,stuRecords);
+  }catch(e){
+    content.innerHTML=`<div class="err-box" style="display:block"><p>Could not load records. Please try again.</p><button onclick="location.reload()">Try Again</button></div>`;
+  }
+}
+
+function renderParentView(parentOf,stuRecords){
+  const name=parentOf.studentName;
+  const recs=[...stuRecords].reverse();
+  const content=step('parent-content');
+
+  // Check for active detentions today or upcoming
+  const today=new Date();today.setHours(0,0,0,0);
+  const detAlerts=[];
+  recs.slice(0,7).forEach(r=>{
+    if(r.detention){
+      const sesDate=new Date(r.date);sesDate.setHours(0,0,0,0);
+      const detDate=new Date(sesDate);detDate.setDate(sesDate.getDate()+1);
+      if(detDate>=today)detAlerts.push({type:'Detention',date:fd(detDate)});
+    }
+    if(r.sundayDetention){
+      detAlerts.push({type:'Sunday Detention',date:'this Sunday'});
+    }
+  });
+
+  const alertHtml=detAlerts.length?detAlerts.map(a=>`
+    <div class="det-alert">
+      <div class="det-alert-icon">⚠️</div>
+      <div class="det-alert-text">
+        <strong>${a.type} Notice</strong>
+        <p>${name} has ${a.type.toLowerCase()} on ${a.date}. Please ensure they attend.</p>
+      </div>
+    </div>`).join(''):'';
+
+  // Weekly avg
+  const now2=new Date(),day=now2.getDay(),diff=day===0?-6:1-day;
+  const mon=new Date(now2);mon.setDate(now2.getDate()+diff);mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  const wRecs=stuRecords.filter(r=>{const d=new Date(r.date);return d>=mon&&d<=sun&&r.score;});
+  const wAvg=wRecs.length?wRecs.reduce((s,r)=>s+(r.score||0),0)/wRecs.length:null;
+  const wAvgStr=wAvg!==null?(Number.isInteger(wAvg)?wAvg:wAvg.toFixed(1))+'/5':'No scores this week';
+
+  const sessHtml=recs.length?recs.map(r=>{
+    const d=new Date(r.date);
+    const detD=r.detention?fd(ad(d,1)):null;
+    const dorAtts=(r.dorAttempts?.length?r.dorAttempts:[{juz:r.dorJuz||[],mistakes:r.dorMistakes||[]}]).filter(a=>a.juz?.length);
+    const spAtts=(r.spAttempts?.length?r.spAttempts:[{juz:r.spJuz||[],pages:r.spPages||0,mistakes:r.spMistakes||0}]).filter(a=>a.juz?.length||a.pages||a.mistakes);
+    return`<div class="parent-sess">
+      <div class="parent-sess-date">${fdt(d)}
+        ${r.detention?`<span class="det-tag">⚠ DET ${detD}</span>`:''}
+        ${r.sundayDetention?`<span class="det-tag" style="background:rgba(181,72,67,.18);">⚠ SUN DET</span>`:''}
+      </div>
+      ${r.score?`<div class="parent-score-row"><span class="parent-score-lbl">Score</span>${sbadge(r.score)}</div>`:''}
+      ${dorAtts.map((att,ai)=>`<div class="parent-section"><strong>Dor${dorAtts.length>1?' (Attempt '+(ai+1)+')':''}:</strong> ${att.juz?.join(', ')||'—'}<br/><span style="font-size:11.5px;">Mistakes: ${(att.mistakes||[]).map(m=>m.section+': '+m.mistakes).join(', ')||'None'}</span></div>`).join('')}
+      ${spAtts.map((att,ai)=>`<div class="parent-section"><strong>Sabak Para${spAtts.length>1?' (Attempt '+(ai+1)+')':''}:</strong>${att.juz?.length?' '+att.juz.join(', '):''}${att.pages?' Page '+att.pages:''}<br/><span style="font-size:11.5px;">Mistakes: ${att.mistakes||0}</span></div>`).join('')}
+      ${(r.sabakLines||r.sabakMistakes)?`<div class="parent-section"><strong>Sabak:</strong> ${r.sabakLines} lines, ${r.sabakMistakes} mistakes</div>`:''}
+      ${r.comment?`<div class="parent-comment">${r.comment}</div>`:''}
+    </div>`;
+  }).join(''):'<p style="color:var(--text-dim);font-size:13px;padding:8px 0;">No sessions recorded yet.</p>';
+
+  content.innerHTML=`
+    ${alertHtml}
+    <div class="parent-stu-card">
+      <div class="parent-stu-hdr">
+        <div class="parent-stu-av">${ini(name)}</div>
+        <div class="parent-stu-info"><h2>${name}</h2><p>Weekly Average: ${wAvgStr} · ${stuRecords.length} session${stuRecords.length!==1?'s':''} recorded</p></div>
+      </div>
+    </div>
+    <div class="parent-hist-card">
+      <div class="parent-hist-title">Full History (${recs.length} sessions)</div>
+      ${sessHtml}
+    </div>`;
+}
+
+async function showStudentPicker(){
+  // New user — show all classes and students to pick from
+  step('parent-photo').src=CU.photoURL||'';
+  step('parent-name').textContent=CU.displayName||CU.email;
+  const content=step('parent-content');
+  content.innerHTML='<div class="load-step">Loading classes…</div>';
+
+  try{
+    // Load all teachers' data to get class lists
+    const snap=await get(ref(db,'users'));
+    if(!snap.exists()){content.innerHTML='<p style="color:var(--text-dim);font-size:13px;">No classes available yet.</p>';return;}
+
+    const allUsers=snap.val();
+    let clsHtml='';
+    Object.entries(allUsers).forEach(([uid,udata])=>{
+      const cls=udata.data?.classes||{};
+      Object.entries(cls).forEach(([cid,clsData])=>{
+        const stus=(clsData.students||[]).filter(s=>s.trim());
+        if(!stus.length)return;
+        clsHtml+=`<div class="picker-cls">
+          <div class="picker-cls-name">${clsData.name}</div>
+          <div class="picker-stu-list">
+            ${stus.map(name=>`<button class="picker-stu-btn" onclick="selectStudent('${uid}','${cid}','${name.replace(/'/g,"\'")}')">
+              <div class="stu-ini">${ini(name)}</div>${name}
+            </button>`).join('')}
+          </div>
+        </div>`;
+      });
+    });
+
+    content.innerHTML=`
+      <div class="picker-card">
+        <div class="picker-title">Welcome to Ahlul Quran</div>
+        <div class="picker-sub">Please select your child's name from the list below. You will only need to do this once.</div>
+        ${clsHtml||'<p style="color:var(--text-dim);font-size:13px;">No students found.</p>'}
+      </div>`;
+  }catch(e){
+    content.innerHTML=`<div class="err-box" style="display:block"><p>Could not load class list: ${e.message}</p><button onclick="location.reload()">Try Again</button></div>`;
+  }
+}
+
+window.selectStudent=async function(ownerUid,classId,studentName){
+  // Check how many parents already linked to this student (max 2)
+  const parentCountSnap=await get(ref(db,'studentParents/'+ownerUid+'_'+classId+'_'+studentName.replace(/\s/g,'_')));
+  const parentCount=parentCountSnap.exists()?Object.keys(parentCountSnap.val()).length:0;
+  if(parentCount>=2){
+    toast('This student already has 2 linked parents. Please contact your teacher.');
+    return;
+  }
+  // Save parent link
+  const parentData={ownerUid,classId,studentName,linkedAt:new Date().toISOString()};
+  await set(ref(db,'parents/'+CU.uid),parentData);
+  // Register in studentParents registry
+  await set(ref(db,'studentParents/'+ownerUid+'_'+classId+'_'+studentName.replace(/\s/g,'_')+'/'+CU.uid),{email:CU.email,linkedAt:new Date().toISOString()});
+  toast('Linked to '+studentName+' ✓');
+  setTimeout(()=>initParentView(parentData),800);
+};
+
+
+window.adminTestParentView=async function(){
+  showScr('parent-screen');
+  await showStudentPicker();
+};
+window.backToAdmin=function(){showScr('app-screen');};
+</script>
+
+
+<iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1776201575495" name="I0_1776201575495" src="./Ahlul Quran_files/iframe.html" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
