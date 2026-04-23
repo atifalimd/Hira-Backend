@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-// 1. Destructure all functions from your controller
+
 const {
   registerUser,
   loginUser,
   googleAuth,
-} = require("../controllers/authController");
+} = require("../controllers/authController.js");
 
 console.log("DEBUG: Functions loaded:", {
   register: !!registerUser,
