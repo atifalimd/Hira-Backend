@@ -36,6 +36,7 @@ exports.registerUser = async (req, res) => {
 
 // --- MANUAL LOGIN ---
 exports.loginUser = async (req, res) => {
+  console.log("DEBUG: Login function triggered with email:", req.body.email);
   const { email, password } = req.body;
 
   try {

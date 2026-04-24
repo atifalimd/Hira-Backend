@@ -28,6 +28,14 @@ app.use(
   })
 );
 
+// DEBUGGING MIDDLEWARE: Log every request
+app.use((req, res, next) => {
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} request to: ${req.url}`
+  );
+  next();
+});
+
 // 3. Database Connection
 mongoose
   .connect(process.env.MONGO_URI)
@@ -52,6 +60,33 @@ app.use((req, res) => {
   console.log(`404 Error: ${req.method} ${req.url} not found`);
   res.status(404).json({ error: "Route not found", path: req.url });
 });
+
+// ... all your app.use routes are ABOVE this ...
+
+// --- MOVE THE DEBUG BLOCK HERE ---
+if (app._router && app._router.stack) {
+  console.log("--- REGISTERED ROUTES ---");
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      console.log(
+        `Route: ${Object.keys(middleware.route.methods)} ${
+          middleware.route.path
+        }`
+      );
+    } else if (middleware.name === "router") {
+      middleware.handle.stack.forEach((handler) => {
+        if (handler.route) {
+          console.log(
+            `Router Path: ${Object.keys(handler.route.methods)} /api/auth${
+              handler.route.path
+            }`
+          );
+        }
+      });
+    }
+  });
+  console.log("-------------------------");
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
