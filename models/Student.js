@@ -17,11 +17,11 @@ const studentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // The "Magic" Array: Stores emails of parents authorized to see this student
+
     parentEmails: [
       {
         type: String,
-        lowercase: true, // Forces "MOM@email.com" to "mom@email.com"
+        lowercase: true,
         trim: true,
       },
     ],
@@ -29,7 +29,6 @@ const studentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// This index makes searching by email much faster
 studentSchema.index({ parentEmails: 1 });
 
 module.exports = mongoose.model("Student", studentSchema);

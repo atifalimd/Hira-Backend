@@ -13,7 +13,7 @@ console.log("DEBUG: Functions loaded:", {
   google: !!googleAuth,
 });
 
-// 2. Map the endpoints to the functions
+
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/google", googleAuth);

@@ -12,13 +12,12 @@ const RecordSchema = new mongoose.Schema({
     required: true,
   },
   date: { type: Date, default: Date.now },
-  type: { type: String, default: "Dhor" }, // Always "Dhor" for this section
+  type: { type: String, default: "Dhor" },
 
-  // This array stores the specific mistakes per quarter
   entries: [
     {
       juz: { type: Number, required: true },
-      quarter: { type: String, required: true }, // e.g., "1/4", "1/2"
+      quarter: { type: String, required: true },
       mistakes: { type: Number, default: 0 },
     },
   ],

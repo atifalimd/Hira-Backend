@@ -2,15 +2,12 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 
-// 1. Initialize Google Client
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// 2. JWT Generator
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
-// --- MANUAL REGISTER ---
 exports.registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -19,7 +16,6 @@ exports.registerUser = async (req, res) => {
     if (userExists)
       return res.status(400).json({ message: "User already exists" });
 
-    // Create manual user with password
     const user = await User.create({ name, email, password, role });
 
     res.status(201).json({
@@ -34,7 +30,6 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// --- MANUAL LOGIN ---
 exports.loginUser = async (req, res) => {
   console.log("DEBUG: Login function triggered with email:", req.body.email);
   const { email, password } = req.body;
@@ -42,7 +37,6 @@ exports.loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    // Note: This matches your existing plain-text comparison
     if (user && user.password === password) {
       res.json({
         _id: user._id,
@@ -59,12 +53,10 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// --- GOOGLE AUTH (LOGIN & REGISTER) ---
 exports.googleAuth = async (req, res) => {
   const { idToken, role } = req.body;
 
   try {
-    // A. Verify the Token with Google
     const ticket = await client.verifyIdToken({
       idToken,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -72,26 +64,22 @@ exports.googleAuth = async (req, res) => {
 
     const { sub: googleId, email, name } = ticket.getPayload();
 
-    // B. Find or Update User
     let user = await User.findOne({ email });
 
     if (user) {
-      // If user exists but hasn't linked Google yet, link it
       if (!user.googleId) {
         user.googleId = googleId;
         await user.save();
       }
     } else {
-      // C. Create New User (No password needed for Google users)
       user = await User.create({
         name,
         email,
         googleId,
-        role, // Received from the frontend radio buttons
+        role,
       });
     }
 
-    // D. Return JWT and User Data
     res.json({
       _id: user._id,
       name: user.name,

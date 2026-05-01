@@ -1,14 +1,8 @@
-# Dependency directories
+
 node_modules/
-
-# Local env files (NEVER PUSH THESE)
 .env
-
-# Tool-specific folders
 .vercel/
 .git/
-
-# Junk/Asset files you don't need in production
 *.pdf
 *.html
 Ahlul Quran_files/

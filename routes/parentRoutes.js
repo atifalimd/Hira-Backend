@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const DailyLog = require("../models/DailyLog");
 
-// GET: Filtered History for Parent Dashboard
 router.get("/history/:studentId", async (req, res) => {
   try {
     const { studentId } = req.params;

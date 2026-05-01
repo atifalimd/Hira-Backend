@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Record = require("../models/Record");
 
-// POST: Save a Dhor Session
 router.post("/add-dhor", async (req, res) => {
   try {
     const { studentId, teacherId, entries, date } = req.body;
@@ -10,7 +9,7 @@ router.post("/add-dhor", async (req, res) => {
     const newRecord = new Record({
       studentId,
       teacherId,
-      entries, // This is the array of {juz, quarter, mistakes}
+      entries,
       date: date || Date.now(),
     });
 
@@ -21,7 +20,6 @@ router.post("/add-dhor", async (req, res) => {
   }
 });
 
-// GET: Fetch records for a specific student (To see history)
 router.get("/student/:studentId", async (req, res) => {
   try {
     const records = await Record.find({ studentId: req.params.studentId }).sort(
@@ -38,7 +36,7 @@ router.put("/update-dhor/:id", async (req, res) => {
     const updatedRecord = await Record.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true } // returns the new version and checks rules
+      { new: true, runValidators: true }
     );
     res.json(updatedRecord);
   } catch (err) {

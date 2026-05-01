@@ -8,7 +8,7 @@ const AttendanceSchema = new mongoose.Schema({
   },
   date: { type: Date, default: Date.now },
   status: { type: String, enum: ["Present", "Absent", "Late"], required: true },
-  reason: { type: String }, // For parent to report absence
+  reason: { type: String },
 });
 
 module.exports = mongoose.model("Attendance", AttendanceSchema);

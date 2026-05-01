@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
 
-// Get Student Dhor Report
 router.get("/report/:id", async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
@@ -17,7 +16,6 @@ router.get("/report/:id", async (req, res) => {
   }
 });
 
-// Add Entry (POST /api/dhor/add/:id)
 router.post("/add/:id", async (req, res) => {
   try {
     const { juz, quarter, mistakes } = req.body;
@@ -33,7 +31,6 @@ router.post("/add/:id", async (req, res) => {
   }
 });
 
-// Delete Entry (DELETE /api/dhor/delete/:studentId/:entryId)
 router.delete("/delete/:studentId/:entryId", async (req, res) => {
   try {
     const updatedStudent = await Student.findByIdAndUpdate(

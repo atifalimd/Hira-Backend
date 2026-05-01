@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Simple comparison method for later use
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return enteredPassword === this.password;
 };

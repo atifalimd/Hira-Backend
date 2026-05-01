@@ -9,11 +9,10 @@ const test = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected for testing...");
 
-    // Create a dummy student
     const dummy = await Student.create({
       name: "Test Student",
-      classId: "Level-1-Gold", // Manual entry like the PDF
-      teacherId: new mongoose.Types.ObjectId(), // Fake ID for now
+      classId: "Level-1-Gold",
+      teacherId: new mongoose.Types.ObjectId(),
     });
 
     console.log("✅ Student Model Working:", dummy);

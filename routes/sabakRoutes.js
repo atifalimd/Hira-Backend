@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
 
-// GET Sabak History
+
 router.get("/report/:id", async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
-    // Use sabakHistory to match your Schema
+    
     const history = student.sabakHistory ? student.sabakHistory : [];
     res.status(200).json({ history });
   } catch (err) {
@@ -14,7 +14,7 @@ router.get("/report/:id", async (req, res) => {
   }
 });
 
-// ADD Sabak Entry
+
 router.post("/add/:id", async (req, res) => {
   try {
     const { lines, mistakes } = req.body;
@@ -29,7 +29,7 @@ router.post("/add/:id", async (req, res) => {
   }
 });
 
-// DELETE Sabak Entry
+
 router.delete("/delete/:studentId/:entryId", async (req, res) => {
   try {
     const updatedStudent = await Student.findByIdAndUpdate(
